@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}
+INDEX PAGE
+{% endblock %}
+
+{% block body %}
+<br>
+<h4>질문 List</h4>
+<br>
+<ui>
+    {% for Q in questions %}
+    <li><a href="{% url 'app:detail' Q.id %}">{{Q.question}}</a></li>
+    {% endfor %}
+</ui>
+{% endblock %}
