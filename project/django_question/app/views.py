@@ -6,26 +6,39 @@ import wikipediaapi
 def index(request):
 
     wiki=wikipediaapi.Wikipedia('ko')
-    page_py = wiki.page('파이썬') 
-    print("Page - Exists: %s" % page_py.exists())
-    print("Page - Title: %s" % page_py.title)
-    print("Page - Summary: %s" % page_py.summary[0:100])
+    page_py = wiki.page('조조') 
+    # print("Page - Exists: %s" % page_py.exists())
+    # print("Page - Title: %s" % page_py.title)
+    # print("Page - Summary: %s" % page_py.summary[0:100])
 
+    print(type(page_py.sections))
 
-    wiki = wikipediaapi.Wikipedia(
-        language='ko',
-        extract_format=wikipediaapi.ExtractFormat.WIKI)
+    # wiki = wikipediaapi.Wikipedia(
+    #     language='ko',
+    #     extract_format=wikipediaapi.ExtractFormat.WIKI)
 
-    p_wiki = wiki.page("파이썬")
-    print(p_wiki.text)
-    with open("파이썬.txt", "w") as f: f.write(p_wiki.text)
+    # p_wiki = wiki.page("조조")
+    # print(p_wiki.text)
+    # with open("조조.txt", "w") as f: f.write(p_wiki.text)
 
+    sec1 = page_py.sections[0:1][0]
+    print(type(sec1))
+    print(sec1)
 
-
+    # sec1_string = " ".join(sec1)
+    # print(type(sec1_string))
+    # # sec1_split = sec1.split("Subsections ")
+    # # print(sec1)
 
     questions = Question.objects.all()
     context = {
         'questions': questions,
+        'total' : page_py.text,
+        'title' : page_py.title,
+        'sections_1' : page_py.sections[0:1],
+        'sections_2' : page_py.sections[1:2],
+        'summary': page_py.summary[0:500],
+
     }
     return render(request,"app/index.html",context)
 
