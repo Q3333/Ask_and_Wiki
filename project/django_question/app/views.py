@@ -6,24 +6,25 @@ import wikipediaapi
 def index(request):
 
     wiki=wikipediaapi.Wikipedia('ko')
-    page_py = wiki.page('조조') 
+    page_py = wiki.page('조조')
     # print("Page - Exists: %s" % page_py.exists())
     # print("Page - Title: %s" % page_py.title)
     # print("Page - Summary: %s" % page_py.summary[0:100])
 
-    print(type(page_py.sections))
+    # print(type(page_py.sections))
 
     # wiki = wikipediaapi.Wikipedia(
     #     language='ko',
     #     extract_format=wikipediaapi.ExtractFormat.WIKI)
 
+    print(type(page_py))
     # p_wiki = wiki.page("조조")
     # print(p_wiki.text)
     # with open("조조.txt", "w") as f: f.write(p_wiki.text)
 
     sec1 = page_py.sections[0:1][0]
-    print(type(sec1))
-    print(sec1)
+    # print(type(sec1))
+    # print(sec1)
 
     # sec1_string = " ".join(sec1)
     # print(type(sec1_string))
