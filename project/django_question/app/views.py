@@ -1,6 +1,15 @@
 from django.shortcuts import render, redirect
 from .models import Question,Choice
 import wikipediaapi
+import konlpy
+import nltk
+from konlpy.tag import Hannanum
+from konlpy.tag import Kkma
+from konlpy.tag import Komoran
+from konlpy.tag import Okt
+from konlpy.tag import Mecab
+from collections import Counter
+
 
 # Create your views here.
 def index(request):
@@ -11,7 +20,7 @@ def index(request):
     # print("Page - Title: %s" % page_py.title)
     # print("Page - Summary: %s" % page_py.summary[0:100])
 
-    print(type(page_py.sections))
+    # print(type(page_py.sections))
 
     # wiki = wikipediaapi.Wikipedia(
     #     language='ko',
@@ -22,15 +31,42 @@ def index(request):
     # with open("조조.txt", "w") as f: f.write(p_wiki.text)
 
     sec1 = page_py.sections[0:1][0]
-    print(type(sec1))
-    print(sec1)
+    # print(type(sec1))
+    # print(sec1)
 
     # sec1_string = " ".join(sec1)
     # print(type(sec1_string))
     # # sec1_split = sec1.split("Subsections ")
     # # print(sec1)
 
+
+    wiki=wikipediaapi.Wikipedia('ko')
+    page_py = wiki.page('조조') 
+    
     questions = Question.objects.all()
+
+#### 여기부터 형태소분석
+
+    text = page_py.text
+    
+    # print(type(text))
+    text2 = str(text)
+    # print(type(text2))
+
+  
+    mecab = Mecab()
+
+    # print(mecab.nouns(text2))
+    
+    list_1 = mecab.nouns(text2)
+
+    print(type(list_1))
+
+    result = Counter(list_1)
+    print(result)
+
+#### 여기까지 형태소분석
+
     context = {
         'questions': questions,
         'total' : page_py.text,
