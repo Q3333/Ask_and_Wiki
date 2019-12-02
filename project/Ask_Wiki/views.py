@@ -5,6 +5,7 @@ import nltk
 from konlpy.tag import Hannanum
 from konlpy.tag import Kkma
 from konlpy.tag import Okt
+from konlpy.tag import Komoran
 from collections import Counter
 
 # from konlpy.tag import Mecab
@@ -43,7 +44,8 @@ def index(request):
     
 #### 여기부터 형태소분석
 
-    text = page_py.text
+    # text = page_py.text
+    text = page_py.summary[0:500]
     
     # print(type(text))
     text2 = str(text)
@@ -53,14 +55,33 @@ def index(request):
     
     # print(mecab.nouns(text2))
     
-    list_1 = okt.nouns(text2)
+    # list_1 = okt.nouns(text2)
 
-    print(type(list_1))
+    # print(type(list_1))
 
-    result = Counter(list_1)
-    print(result)
+    # result = Counter(list_1)
+    # print(result)
 
-#### 여기까지 형태소분석
+    
+
+    komoran = Komoran()
+    
+    
+    # 사용예시
+        
+    print(komoran.nouns(u'오픈소스에 관심 많은 멋진 개발자님들!'))
+    
+    # print(komoran.pos(text2))
+
+    pos_list = komoran.pos(text2)
+    print(type(pos_list))
+
+    for i in pos_list :
+        if i[1] == 'NNP' :
+            print(i[0])
+    
+    # print(pos_list[1][1])
+    # print(pos_list[2][1])
 
     context = {
         'total' : page_py.text,
