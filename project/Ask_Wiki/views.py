@@ -86,9 +86,10 @@ def index(request):
     context = {
         'total' : page_py.text,
         'title' : page_py.title,
-        'sections_1' : page_py.sections[0:1],
-        'sections_2' : page_py.sections[1:2],
+        'subsection' : page_py.sections[2].sections[2], #subsection 내용
+        'subsection_title' : page_py.sections[2].sections[2].title, #subsection 타이틀
         'summary': page_py.summary[0:500],
+        'link' : page_py.links.get,
 
     }
     return render(request,"Ask_Wiki/index.html", context)
