@@ -33,9 +33,17 @@ def index(request):
     pos_list = komoran.pos(text2)
     print(type(pos_list))
 
+
+    NNP_List = []
     for i in pos_list :
         if i[1] == 'NNP' :
-            print(i[0])
+            # print(i[0])
+            NNP_List.append(i[0])
+
+
+    result = Counter(NNP_List)
+    print(result)
+    #단어를 리스트에 추가해서 카운트 갯수 세는 부분
     
     # print(pos_list[1][1])
     # print(pos_list[2][1])
