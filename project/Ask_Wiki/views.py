@@ -23,10 +23,10 @@ def index(request):
 #### 여기부터 형태소분석
 
     # text = page_py.text
-    text = page_py.summary[0:500]
-    
-    text2 = str(text)
- 
+    text = page_py.text
+    text2 = " ".join(text.split())
+    text2 = str(text2)
+    #텍스트 전처리(줄바꿈 및 공백이 길어지면 코모란에서 에러가 뜨길래 전처리함)
 
     komoran = Komoran()
 
