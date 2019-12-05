@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from django.http import HttpResponse
 import wikipediaapi
 import konlpy
 import nltk
@@ -7,6 +8,7 @@ from konlpy.tag import Kkma
 from konlpy.tag import Okt
 from konlpy.tag import Komoran
 from collections import Counter
+import simplejson 
 
 
 def Text_to_list(text_a):
@@ -33,8 +35,23 @@ def Counting(list_a):
 
 
     
-
 def index(request):
+
+    return render(request, 'Ask_Wiki/index.html')
+
+def ajax(request):
+    # request.POST.get('json형식 안의 내용') from html
+    from_html_text = request.POST.get('text')
+    print(from_html_text)
+
+    context = {
+        'text_return': 'aaaaa',
+        'text_return2': '서버에서 보낸data',
+    }
+    
+    return HttpResponse(simplejson.dumps(context), 'Ask_Wiki/index.html')
+
+def main(request):
     wiki=wikipediaapi.Wikipedia('ko')
     page_py = wiki.page('조조') 
     #페이지 존재하는지 확인하는 명령어
@@ -132,4 +149,4 @@ def index(request):
         'link' : page_py.links.get,
 
     }
-    return render(request,"Ask_Wiki/index.html", context)
+    return render(request,"Ask_Wiki/main.html", context)
