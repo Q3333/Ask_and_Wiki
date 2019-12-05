@@ -115,12 +115,9 @@ def main(request):
 
 ## 단어 카운팅 끝
 
-
-## 깃 합칠때 주석 제거 
-    # links = page_py.links
-    # for title in sorted(links.keys()):
-    #     print("%s: %s" % (title, links[title]))
-## 깃 합칠때 주석 제거 끝
+    links = page_py.links
+    for title in sorted(links.keys()):
+        print("%s" % (links[title])) 
 
     #단어를 리스트에 추가해서 카운트 갯수 세는 부분
     
@@ -138,6 +135,7 @@ def main(request):
 
     # print(subsection[0].title)
     # print(type(subsection))
+    
 
     context = {
         'total' : page_py.text,
@@ -146,7 +144,7 @@ def main(request):
         'subsection_title' : page_py.sections[2].sections[2].title, #subsection 타이틀
         'summary': page_py.summary[0:500],
         'test': page_py.sections[0].title,
-        'link' : page_py.links.get,
+        'links' : page_py.links,
 
     }
     return render(request,"Ask_Wiki/main.html", context)
