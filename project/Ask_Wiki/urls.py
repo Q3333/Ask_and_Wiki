@@ -4,5 +4,8 @@ from . import views
 app_name = "Ask"
 
 urlpatterns =[
-    path('index/', views.index, name="index"),
+    path('', views.index, name="index"),
+    path('search_wiki/', views.ajax, name="ajax"),
+    path('main/', views.main, name="main"),
+
 ]
