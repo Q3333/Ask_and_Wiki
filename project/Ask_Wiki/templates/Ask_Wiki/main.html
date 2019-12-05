@@ -27,7 +27,13 @@
 
 
 
-{{link}}
+<ul>
+  {% for link in links.keys %}
+  
+    <li><a href="">{{link.title}}</a><br></li>
+  {% endfor %}
+  </ul>
+  <hr>
 {{subsection_title}} : 
 <br>
 {{subsection}}
