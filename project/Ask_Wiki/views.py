@@ -62,6 +62,10 @@ def index(request):
     result = Counter(NNP_List)
     print(result)
 
+    links = page_py.links
+    for title in sorted(links.keys()):
+        print("%s: %s" % (title, links[title]))
+
 
     #단어를 리스트에 추가해서 카운트 갯수 세는 부분
     
