@@ -123,7 +123,7 @@ def main(request):
 
     links = page_py.links
     for title in sorted(links.keys()):
-        print("%s" % (links[title])) 
+        print("%s" % title) 
 
     #단어를 리스트에 추가해서 카운트 갯수 세는 부분
     
@@ -154,3 +154,17 @@ def main(request):
 
     }
     return render(request,"Ask_Wiki/main.html", context)
+
+def link(request, link):
+    wiki=wikipediaapi.Wikipedia('ko')
+    page_py = wiki.page(link) 
+
+    context = {
+        'total' : page_py.text,
+        'title' : page_py.title,
+        'summary': page_py.summary[0:500],
+        'links' : page_py.links,
+
+    }
+
+    return render(request, 'Ask_Wiki/link.html', context)
