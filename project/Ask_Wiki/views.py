@@ -102,12 +102,18 @@ def main(request):
     # print(total_result)
 
     # 서브1 카운팅
+    print(subsection[0].title)
     pos_list_sub0 = Text_to_list(subsection[0].text)
     sub_result = Counting(pos_list_sub0)
 
-    # print(sub_result.title)
-    print(dir(sub_result))
-    print(sub_result.popitem)
+    print(sub_result)
+    print(sub_result.most_common(4))
+    list_4 = sub_result.most_common(4)
+
+    
+    for a in list_4:
+        print(a[0]) # 이름, 카운트갯수 순서
+    # print(list_4[0][0])
 
     # 할일 : 
     # dir로 카운터에서 단어 뽑기, 서브섹션 있으면 1~5 카운팅 하기, 전체 카운팅하기, 
