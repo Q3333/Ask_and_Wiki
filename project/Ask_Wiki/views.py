@@ -51,6 +51,16 @@ def ajax(request):
     
     return HttpResponse(simplejson.dumps(context), 'Ask_Wiki/index.html')
 
+def result(request):
+    if request.method == "POST":
+        search_keyword = request.POST.get('search_keyword')
+    
+    context = {
+        'text': search_keyword,
+    }
+    return render(request, 'Ask_Wiki/result_page.html',context)
+
+
 def main(request):
     wiki=wikipediaapi.Wikipedia('ko')
     page_py = wiki.page('조조') 
