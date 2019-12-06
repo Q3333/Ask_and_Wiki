@@ -8,4 +8,6 @@ urlpatterns =[
     path('search_wiki/', views.ajax, name="ajax"),
     path('main/', views.main, name="main"),
 
+    path('result/',views.result, name="result"), # 결과화면
+
 ]
