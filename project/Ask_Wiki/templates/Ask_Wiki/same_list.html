@@ -1,0 +1,13 @@
+<ul>
+    {% for link in links.keys %}
+    <form action="{% url 'Ask:main' %}"  method="POST">
+      {% csrf_token %}
+      <li>
+          <input type="hidden" value="{{ link }}" name="search_keyword">
+          <a href="#" onclick="this.parentNode.parentNode.submit()">{{link}}</a>
+          <br>
+    </li>
+    </form>
+    {% endfor %}
+    </ul>
+    <hr>

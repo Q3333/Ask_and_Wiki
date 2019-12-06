@@ -7,20 +7,23 @@
 {{ title }} 
 <hr> 
 <br>
-
-전체 내용에서 카운팅한 키워드 : 
-<br>
-{{total_keyword}}
-<br>
-
-주요 내용에서 카운팅한 키워드 :
-<br>
-키워드 : 
-{{primary_keyword_name}}
-<br>
-{{primary_keyword}}
-<br>
+테스트용 : 
+{{ test }}
 <hr>
+<br>
+요약 : 
+{{ summary }}
+<hr>
+<br>
+<!-- 섹션1 -생애 : 
+<br>
+{% for section in sections_1 %}
+서브섹션 <br>
+{{section}}
+{% endfor %}
+
+<hr>
+<br> -->
 
 
 
@@ -31,10 +34,12 @@
   {% endfor %}
   </ul>
   <hr>
-
+{{subsection_title}} : 
 <br>
-
+{{subsection}}
 <hr>
-
+<br>
+전체 :
+{{ total }}
 
 {% endblock %}
