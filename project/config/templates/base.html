@@ -9,113 +9,26 @@
         {% block title %}
         {% endblock %}
     </title>
-    <style>
-    .div-footer{
-        text-align:center;        
-        position: fixed;
-        bottom: 0;
-    }
-    .div-footer-text{
-        text-align:center;
-        position: fixed;
-        bottom: 0;  
-        width:100%;
-        font-size:0.9em;        
-    }
-
-    .infototaldiv{
-        display:none;
-        z-index:10;
-        position:fixed;
-        background-color:rgba( 255, 255, 255, 0.01 );		
-        padding-top:100px;
-        top:0;
-        left:0;
-        width:100%;
-        height:100%;
-        overflow:auto;		
-    }
-    .infoinnerpage{
-        position:relative;
-        background-color:white;
-        color:black;
-        margin:auto;    	
-        padding:0;
-        outline:0;
-        width:600px;                
-        border-style:solid;
-        border-color:rgb(46, 117, 182);
-        border-radius:10px;
-    }
-    #infoneyong {
-        padding: 4px 40px 4px 40px;
-    }
-    #infoneyong a {
-        text-decoration: none;
-        color: orange;
-    }
-    #infoneyong span {
-        color: skyblue;
-    }
-    .infoclosediv {
-        width: 100%;
-        text-align: center;
-    }
-    {% block css %}
-    {% endblock %}
-    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light" >  
-{% load static %}
-    <img class="navbar-brand" style="width: 30px;" src="{% static 'image/teamlogo.png' %}">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+    <a class="navbar-brand" href="#">Navbar</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-        <a class="nav-item nav-link active" href="{% url 'Ask:index' %}"><b>묻고 위키로 가&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b><span class="sr-only">(current)</span></a>                        
-        <a class="nav-item nav-link active" href="#"><span class="copyright" onclick="document.getElementById('infojs').style.display='block'"><b>만든사람들 & References</b></span></a>                         
+        <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" href="#">Features</a>
+        <a class="nav-item nav-link" href="#">Pricing</a>
+        <a class="nav-item nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </div>
     </div>
 </nav>    
-    <div class="container">
-    {% block content %}
+
+    
+    {% block body %}
     {% endblock %}
-    </div>
-
-<div id='infojs' class="infototaldiv">    
-    <div class="infoinnerpage">           
-	  <div id="infoneyong">          
-	    <br><h5><b>만든사람들 &amp; References</b></h5><br><hr>
-        <b>만든사람들</b><br><br>
-        Team : 개발자의 협곡<br>Developers : 김정현, 박종선, 박진영, 조규상
-        <br><br><br><br><br><br><hr>
-        <b>References</b><br><br>            
-        Django, konlp, 
-        <br><br><br><br><br><br><hr><br>
-        <div class="infoclosediv">
-          <button onclick="document.getElementById('infojs').style.display='none'" id="closebutton">Close</button> 
-        </div> 
-       </div>
-    </div>    
-</div>	
-
-<div class="div-footer">
-    <div class="div-footer-text">
-        <b>2019 Training for 4th Industrial Revolution | Open API를 활용한 빅데이터 전처리・시각화 B 반</b><br>
-        <b>COPYRIGHT© 2019 개발자의협곡 ALL RIGHT RESERVED</b><br>        
-    </div>
-</div>
-
-<script>
-var modal = document.getElementById('infojs');
-window.onclick = function(event) {
-	if (event.target == modal) {
-    	modal.style.display = "none";
-    }
-}
-</script>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
