@@ -103,6 +103,7 @@ def main(request):
         Links = page_py.links
         context = {
         'links' : Links,
+        'search_keyword' : search_keyword,
         }
         return render(request,"Ask_Wiki/same_list.html", context)
 
