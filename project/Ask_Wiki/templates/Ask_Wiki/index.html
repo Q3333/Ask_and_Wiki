@@ -1,39 +1,102 @@
 {% extends 'base.html' %}
-{% block title %}
-제목임
-{% endblock %}
+
 {% block body %}
-제목 :
-{{ title }} 
-<hr> 
-<br>
-테스트용 : 
-{{ test }}
-<hr>
-<br>
-요약 : 
-{{ summary }}
-<hr>
-<br>
-<!-- 섹션1 -생애 : 
-<br>
-{% for section in sections_1 %}
-서브섹션 <br>
-{{section}}
-{% endfor %}
+{% load static %}
+<style>
+    html, body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background-color:rgb(46, 117, 182)
+    }
+    .outer-div{
+        /* border: 1px solid red; */
+        height:85%;
+    }
+    .logo-div{
+        text-align:center;
+        position: relative;
+        height: 40%;
+        margin-top: 3%;
+        /* border: 1px solid black; */
+    }
+    .logo-img-div{
+        position:absolute;
+        width:100%;
+        bottom:5%;
+    }
+    .form-div{
+        text-align:center;
+        /* border: 1px solid black; */
+        height: 30%;
+    }
+    .form-div-inner{
+        text-align:center;
+        height:100%;
+    }
+    .form-inline{
+        width:60%;
+    
+        margin-left: 20%;
+    }
+    .form-group{
+        width:80%;
+    }
+    
+    #text1{
+        width:100%;
+        height:60px;
+        font-size: 1.2em;
+    }
+    
+    #search-btn{
+        width:13%;
+        height:60px;
+        font-size:1.4rem;
+        color: black;
+        background-color: white;
+        border-color: white;
+    }
+    .div-footer{
+        text-align:center;
+        height: 33%;
+        position: relative;
+    }
+    .div-footer-text{
+        width:100%;
+        bottom:0;
+        position: absolute;
+    }
 
-<hr>
-<br> -->
-
-
-
-{{link}}
-{{subsection_title}} : 
-<br>
-{{subsection}}
-<hr>
-<br>
-전체 :
-{{ total }}
+</style>
+    
+    <div class="outer-div">
+        <div class="logo-div">
+            <div class="logo-img-div">
+                <img style="width: 35%;" src="{% static 'image/main.png' %}" alt="">
+            </div>
+        </div>
+    
+        <div class="form-div">
+            <div class="form-div-inner">
+                <form class="form-inline" action="{% url 'Ask:main' %}"  method="POST">
+                    {% csrf_token %}
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" class="form-control" id="text1" name="search_keyword" placeholder="검색어를 입력하세요.">
+                    </div>
+                    <button type="submit"  class="btn btn-primary mb-2" id="search-btn">G O</button>
+                </form>
+            </div>  
+        </div>
+            
+        <div class="div-footer">
+            <div class="div-footer-text">
+                <b>2019 Training for 4th Industrial Revolution | Open API를 활용한 빅데이터 전처리・시각화 B 반</b><br>
+                <b>COPYRIGHT© 2019 개발자의협곡 ALL RIGHT RESERVED | 사이트명 : Ask_Wiki | 대표자 : 개발자의협곡 </b><br>
+                <b>Developers : 김정현, 박종선, 박진영, 조규상 </b>
+            </div>
+        </div>
+    
+    </div>
 
 {% endblock %}

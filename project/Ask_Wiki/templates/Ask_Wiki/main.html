@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}
+제목임
+{% endblock %}
+{% block body %}
+제목 :
+{{ title }} 
+<hr> 
+<br>
+
+전체 내용에서 카운팅한 키워드 : 
+<br>
+{{total_keyword}}
+<br>
+
+주요 내용에서 카운팅한 키워드 :
+<br>
+키워드 : 
+{{primary_keyword_name}}
+<br>
+{{primary_keyword}}
+<br>
+<hr>
+
+
+
+<ul>
+  {% for link in links.keys %}
+  
+    <li><a href='{% url "Ask:link" link %}'>{{link}}</a><br></li>
+  {% endfor %}
+  </ul>
+  <hr>
+
+<br>
+
+<hr>
+
+
+{% endblock %}
