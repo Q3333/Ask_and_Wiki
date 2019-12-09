@@ -85,7 +85,7 @@ def result(request):
 def main(request):
     #페이지 존재하는지 확인하는 명령어
     #print("Page - Exists: %s" % page_py.exists())
-
+    
     if request.method == "POST":
         search_keyword = request.POST.get('search_keyword')
 
@@ -103,7 +103,6 @@ def main(request):
         Links = page_py.links
         context = {
         'links' : Links,
-        'search_keyword' : search_keyword,
         }
         return render(request,"Ask_Wiki/same_list.html", context)
 
@@ -111,19 +110,37 @@ def main(request):
 ### 생애, 요약이 있는지 확인하고 가져오는 함수 
     primary_list = []
     primary_list_name=[]
-
+    Counting_List = []
     for section in page_py.sections :
         print(section.title)
         if section.title == "생애" :
             if len(section.sections) != 0 :
             #서브 섹션이 있는 목록을 거르기 위한 len 확인
                 subsection = section.sections
+                
 
                 for sub in subsection :
                     print(sub.title)
 
                     S_pos_list = Text_to_list(sub.text)
                     sub_result = Counting(S_pos_list,search_keyword)
+
+                    for i in S_pos_list :
+                        if i[1] == 'NNP' and len(i[0]) > 1:
+                            # print(i[0])
+                            Counting_List.append(i[0])
+
+
+
+                    t = Counter(Counting_List)
+                    d =  len(Counting_List)
+                    for i in Counting_List :
+                        print(f"{i} :  {t[i]/d}")
+                        print(f'섹션합 :  {len(subsection)}')
+
+                        print(f'문서 :  {subsection.count(i)}')
+                        print(Counting_List.count(i))
+
                     sub_list = Keywording(sub_result)
                     primary_list.append(sub_list)
 
@@ -159,9 +176,9 @@ def main(request):
 
     # 전체 카운팅
     pos_list = Text_to_list(page_py.text)
-    total_result = Counting(pos_list,search_keyword)
-    total_list = Keywording(total_result)
-
+    total_result = Counting(pos_list,search_keyword) 
+    total_list = Keywording(total_result)  #전체 키워드
+    
 
     context = {
         'total_keyword' : total_list,
@@ -171,6 +188,8 @@ def main(request):
         'test': page_py.title,
         'links' : Links,
     }
+
+
     return render(request,"Ask_Wiki/main.html", context)
 
 
