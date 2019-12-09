@@ -214,7 +214,7 @@ def main(request):
 
 ## 전체 카운팅 끝
     
-
+    primary_list.reverse()
     context = {
         'total_keyword' : total_list,
         'total_summary' : total_summary,
@@ -225,7 +225,8 @@ def main(request):
         'links' : Links,
     }
 
-    return render(request,"Ask_Wiki/main.html", context)
+    # return render(request,"Ask_Wiki/main.html", context)
+    return render(request,"Ask_Wiki/mindmap.html", context)
 
 
 def link(request, link):
