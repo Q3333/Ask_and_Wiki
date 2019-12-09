@@ -167,3 +167,11 @@ dmypy.json
 # Pyre type checker
 
 # End of https://www.gitignore.io/api/python,django
+
+project/Ask_Wiki/__pycache__/__init__.cpython-37.pyc
+project/Ask_Wiki/__pycache__/admin.cpython-37.pyc
+project/Ask_Wiki/__pycache__/models.cpython-37.pyc
+project/Ask_Wiki/__pycache__/urls.cpython-37.pyc
+project/Ask_Wiki/__pycache__/views.cpython-37.pyc
+project/Ask_Wiki/migrations/__pycache__/__init__.cpython-37.pyc
+*.pyc
