@@ -1,67 +1,102 @@
 {% extends 'base.html' %}
 
-{% block title %}
-묻고 위키로 가!
-{% endblock%}
-
-{% block css %}
-body {   
-    background-color:rgb(46, 117, 182)
-}
-.logo-div{  
-    width:100%;          
-    text-align:center;
-    margin:10% 0 1% 0;
-    //border:1px solid black;    
-}
-.logo-img-div{    
-    display: inline-block;          
-    margin:1% 0 1% 0;          
-    //border:1px solid black;    
-}
-.mainlogo{
-    width:80%;
-}
-.form-div{
-    text-align:center;    
-    height: 30%;
-}
-.form-inline{
-    width:60%;
-    margin-left: 20%;
-}
-.form-group{
-    width:80%;
-}
-#text1{
-    width:100%;
-    height:60px;
-    font-size: 1.2em;
-}
-#search-btn{
-    width:13%;
-    height:60px;
-    font-size:1.4rem;
-    color: black;
-    background-color: white;
-    border-color: white;
-}
-{% endblock%}
-
-{% block content %}
+{% block body %}
 {% load static %}
-    <div class="logo-div">
-        <div class="logo-img-div">
-            <img src="{% static 'image/main.png' %}" alt="묻고위키로가!" class="mainlogo">
-        </div>
-    </div>
-    <div class="form-div">        
-        <form class="form-inline" action="{% url 'Ask:main' %}"  method="POST">
-            {% csrf_token %}
-            <div class="form-group mx-sm-3 mb-2">
-                <input type="text" class="form-control" id="text1" name="search_keyword" placeholder="검색어를 입력하세요.">
+<style>
+    html, body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background-color:rgb(46, 117, 182)
+    }
+    .outer-div{
+        /* border: 1px solid red; */
+        height:85%;
+    }
+    .logo-div{
+        text-align:center;
+        position: relative;
+        height: 40%;
+        margin-top: 3%;
+        /* border: 1px solid black; */
+    }
+    .logo-img-div{
+        position:absolute;
+        width:100%;
+        bottom:5%;
+    }
+    .form-div{
+        text-align:center;
+        /* border: 1px solid black; */
+        height: 30%;
+    }
+    .form-div-inner{
+        text-align:center;
+        height:100%;
+    }
+    .form-inline{
+        width:60%;
+    
+        margin-left: 20%;
+    }
+    .form-group{
+        width:80%;
+    }
+    
+    #text1{
+        width:100%;
+        height:60px;
+        font-size: 1.2em;
+    }
+    
+    #search-btn{
+        width:13%;
+        height:60px;
+        font-size:1.4rem;
+        color: black;
+        background-color: white;
+        border-color: white;
+    }
+    .div-footer{
+        text-align:center;
+        height: 33%;
+        position: relative;
+    }
+    .div-footer-text{
+        width:100%;
+        bottom:0;
+        position: absolute;
+    }
+
+</style>
+    
+    <div class="outer-div">
+        <div class="logo-div">
+            <div class="logo-img-div">
+                <img style="width: 35%;" src="{% static 'image/main.png' %}" alt="">
             </div>
-            <button type="submit"  class="btn btn-primary mb-2" id="search-btn">G O</button>
-        </form>        
-    </div> 
+        </div>
+    
+        <div class="form-div">
+            <div class="form-div-inner">
+                <form class="form-inline" action="{% url 'Ask:main' %}"  method="POST">
+                    {% csrf_token %}
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input type="text" class="form-control" id="text1" name="search_keyword" placeholder="검색어를 입력하세요.">
+                    </div>
+                    <button type="submit"  class="btn btn-primary mb-2" id="search-btn">G O</button>
+                </form>
+            </div>  
+        </div>
+            
+        <div class="div-footer">
+            <div class="div-footer-text">
+                <b>2019 Training for 4th Industrial Revolution | Open API를 활용한 빅데이터 전처리・시각화 B 반</b><br>
+                <b>COPYRIGHT© 2019 개발자의협곡 ALL RIGHT RESERVED | 사이트명 : Ask_Wiki | 대표자 : 개발자의협곡 </b><br>
+                <b>Developers : 김정현, 박종선, 박진영, 조규상 </b>
+            </div>
+        </div>
+    
+    </div>
+
 {% endblock %}
