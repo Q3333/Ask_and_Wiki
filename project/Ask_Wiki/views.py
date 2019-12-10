@@ -51,7 +51,7 @@ def Keywording(Counter_a):
     #지금은 단순 카운팅, 나중에 tf,idf로 적용
     temp_list = []
 
-    list_4 = Counter_a.most_common(4)
+    list_4 = Counter_a.most_common()
 
     for a in list_4:
         temp_list.append(a[0])
@@ -138,8 +138,6 @@ def main(request):
     primary_list = []
     primary_list_name=[]
     Counting_List = []
-    total_summary = []
-
     for section in page_py.sections :
         print(section.title)
         if section.title.find("생애") != -1:
@@ -150,9 +148,6 @@ def main(request):
 
                 for sub in subsection :
                     print(sub.title)
-                    
-                    a = sub.text
-                    total_summary.append(a[:a.find('\n')])
 
                     S_pos_list = Text_to_list(sub.text)
                     sub_result = Counting(S_pos_list,search_keyword)
@@ -161,22 +156,41 @@ def main(request):
                         if i[1] == 'NNP' and len(i[0]) > 1:
                             # print(i[0])
                             Counting_List.append(i[0])
+                    
 
 
-
-                    t = Counter(Counting_List)
-                    d =  len(Counting_List)
+                    # t = Counter(Counting_List)
+                    # d =  len(Counting_List)
                     # for i in Counting_List :
-                        # print(f"{i} :  {t[i]/d}")
-                        # print(f'섹션합 :  {len(subsection)}')
+                    #     tf = t[i]/d
+                        # idf = math.log(len(subsection)/sum(primary_list, []).count(i))
+                        # tf_idf = tf*idf
+                        # print(f"{i} : {t[i]},{sum(primary_list, []).count(i)}")
+                        # print(f'{i} tf-idf :  {tf_idf}')
 
-                        # print(f'문서 :  {subsection.count(i)}')
-                        # print(Counting_List.count(i))
-
+                    
                     sub_list = Keywording(sub_result)
                     primary_list.append(sub_list)
 
-                    primary_list_name.append(sub.title)
+                    t = sub_result
+                    d = len(sub_list)
+
+                
+                    for i in sub_list :
+                        print(f'{i} : {t[i]} : {sub_result[i]/d}')
+
+
+
+
+                    # for i in sub_list : 
+                    #     print(f"{i} 전체문서 : {sum(primary_list, []).count(i)}")
+
+                    #     primary_list_name.append(sub.title)
+
+                # // 1. primary list 에서 키워드 중복 제거 chain  keywords = 중복제거한 prilist
+                # 2. 중복된 키워드를 가지고 primary list 2중 배열 -> for 문으로 돌리는데 중복이 있을수 있으니 set()
+                for i in Counting_List :
+                    print(f"{i} 전체문서 : {sum(primary_list, []).count(i)}")
 
         elif section.title == "역사":
             print("이거는 역사")
@@ -186,7 +200,6 @@ def main(request):
             
 ### 생애, 요약이 있는지 확인하고 가져오는 함수 끝
     
-
 
 
 ## 단어 카운팅, 깃 합칠때 주석 제거
@@ -215,11 +228,11 @@ def main(request):
     total_list = Keywording(total_result)
 
     #전체 키워드의 요약 내용
-    # total_summary = summary(total_list)
+    total_summary = summary(total_list)
 
 ## 전체 카운팅 끝
     
-    primary_list.reverse()
+
     context = {
         'total_keyword' : total_list,
         'total_summary' : total_summary,
@@ -230,8 +243,7 @@ def main(request):
         'links' : Links,
     }
 
-    # return render(request,"Ask_Wiki/main.html", context)
-    return render(request,"Ask_Wiki/mindmap.html", context)
+    return render(request,"Ask_Wiki/main.html", context)
 
 
 def link(request, link):
