@@ -1,104 +1,86 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block link %}
+  <link rel="stylesheet" href="{% static 'Ask_Wiki/css/mindmap.css' %}"/>   
+{% endblock %}
+
+{% block title %}
+검색 결과입니다.
+{% endblock%}
+
 {% block content %}
-
-    
-
-<!-- <ul>
+<!-- 
+  <ul>
     <li><a href="http://jeffbarcay.com/">{{title}}</a>
       <ul>
         <li><a href="#" target="_blank" data-content="chest-pain" style="background:green !important;">원소</a></li>
         <li><a href="#" target="_blank" data-content="head-pain" color="blue">동탁</a></li>
         <li><a href="#" target="_blank" class="icon facebook">유비</a></li>
         <li><a href="#">조비</a>
-          <ul>
-          	<li><a href="#" target="_blank" class="icon twitter" title="9">ACS</a></li> 
-          	<li><a href="#" target="_blank" class="closebtn" title="13">STEMI</a>
-          	  <ul>
-          		<li><a href="#" title="A">Treatment</a></li> 
-          		<li><a href="#" title="C">Protocol</a></li> 
-          	  </ul>
-            </li>
-              
-          </ul>
+        <ul>
+          <li><a href="#" target="_blank" class="icon twitter" title="9">ACS</a></li> 
+          <li><a href="#" target="_blank" class="closebtn" title="13">STEMI</a></li> 
+            <ul>
+              <li><a href="#" title="A">Treatment</a></li> 
+              <li><a href="#" title="C">Protocol</a></li> 
+            </ul>            
+        </ul>
         </li>
-    
-        
-  		</ul>
+      </ul>
     </li>
-  </ul> -->
-
+  </ul> 
+-->
 
   <ul>
-      <li><a href="http://jeffbarcay.com/">{{title}}</a>
-        <ul>
-          {% for a in primary_keyword_name %}
-          
+    <li><a href="http://jeffbarcay.com/">{{title}}</a>
+      <ul>
+        {% for a in first_keyword_name %}        
           <li><a href="#" >{{a}}</a>
               <ul>
-              {% for b in primary_keyword.pop %}
-              
-                  <li><a href="#" >{{b}}</a></li> 
-                  
-              {% endfor %}
+                {% for b in second_keyword_name.pop %}            
+                    <li><a href="#" >{{b}}</a></li>                
+                {% endfor %}
               </ul>
           </li>
-          {% endfor %}
-          <!-- <li><a href="#" target="_blank" data-content="chest-pain" style="background:green !important;">원소</a></li>
-          <li><a href="#" target="_blank" data-content="head-pain" color="blue">동탁</a></li>
-          <li><a href="#" target="_blank" class="icon facebook">유비</a></li>
-          <li><a href="#">조비</a>
-            <ul>
-              <li><a href="#" target="_blank" class="icon twitter" title="9">ACS</a></li> 
-              <li><a href="#" target="_blank" class="closebtn" title="13">STEMI</a>
-                <ul>
-                <li><a href="#" title="A">Treatment</a></li> 
-                <li><a href="#" title="C">Protocol</a></li> 
-                </ul>
-              </li>
-                
-            </ul>
-          </li> -->
-      
-          
-        </ul>
-      </li>
-    </ul>
-  
-
-
-<div class="alert">
-  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-  <div class="content-container">
-  </div>
-</div>
-<div class="content" id="chest-pain">
-  <ul>
-    <li>one</li>
-    <li>two</li>
-    <li>three</li>
+        {% endfor %}
+      </ul>
+    </li>
   </ul>
-</div>
 
-<div class="content" id="head-pain">
-  <ul>
-    <li>four</li>
-    <li>five</li>
-    <li>six</li>
-  </ul>
-</div>
 
 <div id="pop">
     <div id="pop-title" style="height:370px;">
         <!-- 동적으로 text 할당 -->
     </div>
+  </div>  
+  <div class="content" id="chest-pain">
+    <ul>
+      <li>one</li>
+      <li>two</li>
+      <li>three</li>
+    </ul>
+  </div>
+  <div class="content" id="head-pain">
+    <ul>
+      <li>four</li>
+      <li>five</li>
+      <li>six</li>
+    </ul>
+  </div>
+-->
 
+  <div id="pop">
+    <!-- 동적으로 text 할당 -->
+    <div id="pop-text" style="height:370px;"></div>
     <div>
       <div id="close" style="width:100px; margin:auto;">close</div>
     </div>
-</div>
+  </div>
+{% endblock %}
 
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> -->
+{% block bodyscript %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script src="https://jeffbarclay.com/mindmap/raphael-min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js"></script>
   <script src="{% static 'Ask_Wiki/js/mindmap.js' %}" type="text/javascript"></script>

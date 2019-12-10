@@ -52,6 +52,7 @@ def Keywording(Counter_a):
     temp_list = []
 
     list_4 = Counter_a.most_common(4)
+    # 4 빼놓으셨길래 다시 채움
 
     for a in list_4:
         temp_list.append(a[0])
@@ -68,7 +69,8 @@ def summary(list_a):
         b = categories.get('분류:동명이인 문서')
 
         if a == None and b == None:
-            summary_list.append(page_py.summary[0:100])
+            a = page_py.summary
+            summary_list.append(a[:a.find('\n')])
         else : 
             summary_list.append("동음 이의어 문서입니다. 해당 키워드를 다시 검색해 주세요.")
             # print(page_py.links.keys())
@@ -134,11 +136,14 @@ def main(request):
 ### 예외 처리
 
 
-### 생애, 요약이 있는지 확인하고 가져오는 함수 
-    primary_list = []
-    primary_list_name=[]
+### 서브섹션 존재하는지 체크하고 처리하는 함수(기존 생애, 역사 등)
+    second_keyword_name = []
+    # primary_list -> second_keyword_name 로 변경
+    first_keyword_name=[]
+    # primary_list_name -> first_keyword_name 로 변경
     Counting_List = []
     total_summary = []
+    second_summary = []
 
     for section in page_py.sections :
         print(section.title)
@@ -149,34 +154,60 @@ def main(request):
                 
 
                 for sub in subsection :
-                    print(sub.title)
-                    
                     a = sub.text
                     total_summary.append(a[:a.find('\n')])
+                    #서머리 구하는 함수
 
                     S_pos_list = Text_to_list(sub.text)
                     sub_result = Counting(S_pos_list,search_keyword)
+                    sub_list = Keywording(sub_result)
+
+                    second_keyword_name.append(sub_list)
+                    first_keyword_name.append(sub.title)
+                    #위치 바꿈
 
                     for i in S_pos_list :
                         if i[1] == 'NNP' and len(i[0]) > 1:
                             # print(i[0])
                             Counting_List.append(i[0])
+                    
+                    
 
-
-
-                    t = Counter(Counting_List)
-                    d =  len(Counting_List)
+                    # t = Counter(Counting_List)
+                    # d =  len(Counting_List)
                     # for i in Counting_List :
-                        # print(f"{i} :  {t[i]/d}")
-                        # print(f'섹션합 :  {len(subsection)}')
+                    #     tf = t[i]/d
+                        # idf = math.log(len(subsection)/sum(second_keyword_name, []).count(i))
+                        # tf_idf = tf*idf
+                        # print(f"{i} : {t[i]},{sum(second_keyword_name, []).count(i)}")
+                        # print(f'{i} tf-idf :  {tf_idf}')
 
-                        # print(f'문서 :  {subsection.count(i)}')
-                        # print(Counting_List.count(i))
 
-                    sub_list = Keywording(sub_result)
-                    primary_list.append(sub_list)
 
-                    primary_list_name.append(sub.title)
+
+                    t = sub_result
+                    d = len(sub_list)
+
+                
+                    # for i in sub_list :
+                    #     print(f'{i} : {t[i]} : {sub_result[i]/d}')
+
+                    
+
+
+
+
+                    for i in sub_list : 
+                        print(f"{i} 전체문서 : {sum(second_keyword_name, []).count(i)}")
+
+                        
+
+                # // 1. primary list 에서 키워드 중복 제거 chain  keywords = 중복제거한 prilist
+                # 2. 중복된 키워드를 가지고 primary list 2중 배열 -> for 문으로 돌리는데 중복이 있을수 있으니 set()
+                # for i in Counting_List :
+                #     print(f"{i} 전체문서 : {sum(second_keyword_name, []).count(i)}")
+
+                    
 
         elif section.title == "역사":
             print("이거는 역사")
@@ -184,12 +215,12 @@ def main(request):
         else :
             print("패스")
             
-### 생애, 요약이 있는지 확인하고 가져오는 함수 끝
+### 서브섹션 존재하는지 체크하고 처리하는 함수 끝
+    
     
 
 
-
-## 단어 카운팅, 깃 합칠때 주석 제거
+### 텍스트 전처리, 카운팅
     # 사용 방법 : Text_to_list() 에 텍스트를 넣음 -> 텍스트 전처리된 리스트화
     # 사용 방법2 : Counting() 에 리스트를 넣음 -> 고유명사로 카운팅
     # 사용 방법3 : 2에서 만든 카운터 객체를 Keywording 함수에 넣고 리스트에 할당
@@ -202,9 +233,6 @@ def main(request):
     # 전체 카운팅
     pos_list = Text_to_list(page_py.text)
 
-    # if request.method == "POST":
-    #     search_keyword = request.POST.get('search_keyword')
-    
     if request.POST.get('original_keyword') == None :
         total_result = Counting(pos_list,search_keyword)
     else : 
@@ -212,19 +240,41 @@ def main(request):
         total_result = Counting(pos_list,original_keyword)
     # 동음 이의어 문서에서 링크 타고 들어왔으면 불용어에 original_keyword를 사용
 
-    total_list = Keywording(total_result)
+    # 서브섹션 없는 키워드 다루는 부분
+    if len(second_keyword_name) == 0 and len(total_summary) == 0:
+        first_keyword_name = Keywording(total_result)
+        total_summary = summary(first_keyword_name)
+        # print(total_summary)
 
-    #전체 키워드의 요약 내용
-    # total_summary = summary(total_list)
+        for single_keyword in first_keyword_name :
+            print(single_keyword)
 
-## 전체 카운팅 끝
+            page_py2 = wiki.page(single_keyword)
+
+            categories = page_py2.categories
+            a = categories.get('분류:동음이의어 문서')
+            b = categories.get('분류:동명이인 문서')
+
+            if a == None and b == None:
+                pos_list = Text_to_list(page_py2.text)
+                total_result = Counting(pos_list,single_keyword)
+                second_keyword_name.append(Keywording(total_result))
+                # 서머리 다루는건 속도때문에 안하거나 나중에...(12/10일 작업)
+                # a = Keywording(total_result)
+                # second_summary.append(summary(a))
+            else : 
+                second_keyword_name.append(["동음 이의어 문서입니다. 해당 키워드를 메인 화면에서 다시 검색해 주세요."])
+
+
+### 텍스트 전처리, 카운팅 끝
     
-    primary_list.reverse()
+
+    second_keyword_name.reverse()
     context = {
-        'total_keyword' : total_list,
+        'second_summary' : second_summary,
         'total_summary' : total_summary,
-        'primary_keyword' : primary_list,
-        'primary_keyword_name' : primary_list_name,
+        'second_keyword_name' : second_keyword_name,
+        'first_keyword_name' : first_keyword_name,
         'title' : page_py.title,
         'test': page_py.title,
         'links' : Links,
@@ -232,6 +282,7 @@ def main(request):
 
     # return render(request,"Ask_Wiki/main.html", context)
     return render(request,"Ask_Wiki/mindmap.html", context)
+
 
 
 def link(request, link):
