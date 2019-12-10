@@ -86,7 +86,7 @@
         ///////////////////////////////////////////////////////////////////////////
         this.el.hover(function(){
             $('#pop').show();
-            $('#pop-text').text(this.text);
+            $('#pop-title').text(this.text);
         });
         this.el.mouseleave(function(){
             $('#pop').hide();
