@@ -138,6 +138,8 @@ def main(request):
     primary_list = []
     primary_list_name=[]
     Counting_List = []
+    total_summary = []
+
     for section in page_py.sections :
         print(section.title)
         if section.title.find("생애") != -1:
@@ -148,6 +150,9 @@ def main(request):
 
                 for sub in subsection :
                     print(sub.title)
+                    
+                    a = sub.text
+                    total_summary.append(a[:a.find('\n')])
 
                     S_pos_list = Text_to_list(sub.text)
                     sub_result = Counting(S_pos_list,search_keyword)
@@ -161,12 +166,12 @@ def main(request):
 
                     t = Counter(Counting_List)
                     d =  len(Counting_List)
-                    for i in Counting_List :
-                        print(f"{i} :  {t[i]/d}")
-                        print(f'섹션합 :  {len(subsection)}')
+                    # for i in Counting_List :
+                        # print(f"{i} :  {t[i]/d}")
+                        # print(f'섹션합 :  {len(subsection)}')
 
-                        print(f'문서 :  {subsection.count(i)}')
-                        print(Counting_List.count(i))
+                        # print(f'문서 :  {subsection.count(i)}')
+                        # print(Counting_List.count(i))
 
                     sub_list = Keywording(sub_result)
                     primary_list.append(sub_list)
@@ -210,7 +215,7 @@ def main(request):
     total_list = Keywording(total_result)
 
     #전체 키워드의 요약 내용
-    total_summary = summary(total_list)
+    # total_summary = summary(total_list)
 
 ## 전체 카운팅 끝
     
