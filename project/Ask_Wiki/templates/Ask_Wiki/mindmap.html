@@ -48,35 +48,28 @@
     </li>
   </ul>
 
-
-<div id="pop">
-    <div id="pop-title" style="height:370px;">
-        <!-- 동적으로 text 할당 -->
-    </div>
-  </div>  
-  <div class="content" id="chest-pain">
-    <ul>
-      <li>one</li>
-      <li>two</li>
-      <li>three</li>
-    </ul>
-  </div>
-  <div class="content" id="head-pain">
-    <ul>
-      <li>four</li>
-      <li>five</li>
-      <li>six</li>
-    </ul>
-  </div>
--->
-
   <div id="pop">
-    <!-- 동적으로 text 할당 -->
-    <div id="pop-text" style="height:370px;"></div>
-    <div>
-      <div id="close" style="width:100px; margin:auto;">close</div>
+    <div id="pop-title" style="height:24px;">
+      <!-- 동적으로 title 할당 -->
     </div>
-  </div>
+
+    <div id="pop-text" style="overflow:auto; height:448px">
+      <!-- 동적으로 text 할당 -->
+    </div>
+
+    <div>
+      <div id="close" style="width:100px; margin:auto; bottom:0px; height:24px">close</div>
+    </div>
+</div>
+
+<div id="hidden-summary" style="display: none;">{% for c in total_summary %}{{c}}/{% endfor %}</div>
+
+<div id="total-keyword" style="display: none;">{% for d in first_keyword_name %}{{d}}/{% endfor %}</div>
+
+<div id="total-summary" style="display: none;">
+  {{ total_summary}}
+</div>
+
 {% endblock %}
 
 {% block bodyscript %}
