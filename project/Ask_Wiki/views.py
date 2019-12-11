@@ -108,6 +108,7 @@ def main(request):
     search_keyword = None
     if request.method == "POST":
         search_keyword = request.POST.get('search_keyword')
+        # print(request.POST.get('num')) 가지갯수 num으로 꺼내 쓰면 됩니다
 
     if search_keyword == None or search_keyword == "" :
         return render(request, 'Ask_Wiki/error_page.html')

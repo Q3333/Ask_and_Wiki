@@ -85,7 +85,7 @@
         
         ///////////////////////////////////////////////////////////////////////////
         this.el.hover(function(){
-            $('#pop').show();
+            
             $('#pop-title').text(this.text);
             //$('#pop-text').text();// html에서 ? 
 
@@ -100,6 +100,11 @@
             }else{
                 $('#pop-text').text('')
             }
+            if($('#pop-text').text() == ""){
+                $('#pop-text').text('aaaaaaaaaaaaa')
+            }
+
+            $('#pop').show();
 
         });
 
