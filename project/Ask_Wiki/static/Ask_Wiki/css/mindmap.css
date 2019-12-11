@@ -10,6 +10,10 @@ svg{
   display:none;
 }
 */
+body.js-mindmap-active {
+  min-height: 100vh;
+}
+
 .js-mindmap-active a.node {
   background: #fff ;
   border: 1px solid #f0f0f0;
@@ -84,7 +88,56 @@ background:#8B0000;
 }
 */
 #pop{
-  width:300px; height:400px; background:#3d3d3d; color:#fff;
+  width:400px; height:500px; background:#3d3d3d; color:#fff;
   position:absolute; top:100px; left:100px; text-align:center;
   border:2px solid #000;
+}
+
+
+
+
+.mindmap-form-div{    
+  width: 100%;
+  margin-left: 17%;
+  position:fixed; 
+  bottom:40px;
+}
+.mindmap-form-inline{
+  width:60%;
+}
+.form-group-text{
+  width: 60%;
+  float: left;
+  margin-right: 0px!important;
+}
+.form-group-num{
+  width:10%;
+  float: left;
+  height:60px;
+  margin-left: 5px;
+}
+.form-group-btn{
+  float: left;
+  margin-left: 20px;
+  width:10%;
+}
+.input-num{
+  height:60px;
+  font-size: 1.2em;
+  text-align: center;
+  width: 100%;
+}
+
+#text1{
+  width:100%;
+  height:60px;
+  font-size: 1.2em;
+}
+#mindmap-search-btn{
+  width:100%;
+  height:60px;
+  font-size:1.4rem;
+  color: black;
+  background-color: white;
+  border-color: white;
 }

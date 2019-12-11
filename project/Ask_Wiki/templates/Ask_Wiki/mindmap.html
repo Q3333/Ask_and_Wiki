@@ -48,35 +48,78 @@
     </li>
   </ul>
 
-
-<div id="pop">
-    <div id="pop-title" style="height:370px;">
-        <!-- 동적으로 text 할당 -->
-    </div>
-  </div>  
-  <div class="content" id="chest-pain">
-    <ul>
-      <li>one</li>
-      <li>two</li>
-      <li>three</li>
-    </ul>
-  </div>
-  <div class="content" id="head-pain">
-    <ul>
-      <li>four</li>
-      <li>five</li>
-      <li>six</li>
-    </ul>
-  </div>
--->
-
   <div id="pop">
-    <!-- 동적으로 text 할당 -->
-    <div id="pop-text" style="height:370px;"></div>
-    <div>
-      <div id="close" style="width:100px; margin:auto;">close</div>
+    <div id="pop-title" style="height:24px;">
+      <!-- 동적으로 title 할당 -->
     </div>
-  </div>
+
+    <div id="pop-text" style="overflow:auto; height:448px">
+      <!-- 동적으로 text 할당 -->
+    </div>
+
+    <div>
+      <div id="close" style="width:100px; margin:auto; bottom:0px; height:24px">close</div>
+    </div>
+</div>
+
+<!-- <div class="mindmap-form-div" style="position:fixed; bottom:40px;">        
+  <form class="mindmap-form-inline" action="{% url 'Ask:main' %}"  method="POST">
+      {% csrf_token %}
+    <div style="width: 100%;">
+      <div class="form-group-text mx-sm-3 mb-2">
+          <input type="text" class="mindmap-form-control" id="text1" name="search_keyword" placeholder="검색어를 입력하세요.">
+      </div>
+
+      <div class="form-group-num row">
+          <input class="form-control" type="number" value="4" id="num" min="1" max="10" step="1">
+      </div>
+
+      <div>
+        <button type="submit"  class="mindmap-btn btn-primary mb-2" id="mindmap-search-btn">G O</button>
+      </div>
+    </div>
+  </form>        
+</div>  -->
+<div class="mindmap-form-div">        
+  <form class="mindmap-form-inline" action="{% url 'Ask:main' %}"  method="POST">
+      {% csrf_token %}
+    <div style="width: 100%;">
+      <div class="form-group-text mx-sm-3 mb-2">
+          <input type="text" class="mindmap-form-control" id="text1" name="search_keyword" placeholder="검색어를 입력하세요.">
+      </div>
+
+      <div class="form-group-num row">
+          <input class="input-num" type="number" value="4" name="num" min="1" max="10" step="1">
+      </div>
+
+      <div class="form-group-btn">
+        <button type="submit"  class="mindmap-btn btn-primary mb-2" id="mindmap-search-btn">G O</button>
+      </div>
+    </div>
+  </form>        
+</div> 
+
+
+
+<div id="hidden-summary" >
+  
+  {% for a in DB2 %}
+    {% if a.title == "초콜릿" %}
+      {{a.summary}}
+    {% endif %}
+  {% endfor %}
+  
+  
+</div>
+
+<!-- <div id="hidden-summary" style="display: none;">{@% for c in total_summary %}{@{c}}/{@% endfor %}</div> -->
+
+<div id="total-keyword" style="display: none;">{% for d in first_keyword_name %}{{d}}/{% endfor %}</div>
+
+<div id="total-summary" style="display: none;">
+  {{ total_summary}}
+</div>
+
 {% endblock %}
 
 {% block bodyscript %}

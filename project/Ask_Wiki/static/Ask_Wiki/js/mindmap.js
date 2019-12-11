@@ -85,9 +85,29 @@
         
         ///////////////////////////////////////////////////////////////////////////
         this.el.hover(function(){
-            $('#pop').show();
+            
             $('#pop-title').text(this.text);
+            //$('#pop-text').text();// html에서 ? 
+
+            var summary = $('#hidden-summary').text() //hidden div text
+            var summary_arr = summary.split("/") 
+            
+            var keyword = $('#total-keyword').text() //hidden div text
+            var keyword_arr = keyword.split("/")
+
+            if(keyword_arr.indexOf(this.text) != -1){
+                $('#pop-text').text(summary_arr[keyword_arr.indexOf(this.text)])
+            }else{
+                $('#pop-text').text('')
+            }
+            if($('#pop-text').text() == ""){
+                $('#pop-text').text('aaaaaaaaaaaaa')
+            }
+
+            $('#pop').show();
+
         });
+
         this.el.mouseleave(function(){
             $('#pop').hide();
         });
