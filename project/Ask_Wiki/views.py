@@ -9,7 +9,9 @@ from konlpy.tag import Okt
 from konlpy.tag import Komoran
 from collections import Counter
 import simplejson 
-from wordcloud import WordCloud, STOPWORDS 
+from wordcloud import WordCloud, STOPWORDS
+import math
+import operator 
 # 나중에 안쓰면 스탑워드 남기고 워클만삭제
 from .models import Wiki 
 
@@ -118,6 +120,10 @@ def result(request):
     }
     return render(request, 'Ask_Wiki/result_page.html',context)
 
+def tf_idf(t,d,D):
+    tf = float(d.count(t)) / sum(d.count(w) for w in set(d))
+    idf = math.log( float(len(D))/ (len([doc for doc in D if t in doc])) )
+    return tf*idf
 
 def main(request):
     search_keyword = None
@@ -162,10 +168,13 @@ def main(request):
     first_keyword_name=[]
     # primary_list_name -> first_keyword_name 로 변경
     Counting_List = []
+    tfidf_list = []
+    sub_final_list = []
 
     for section in page_py.sections :
         print(section.title)
         if section.title.find("생애") != -1:
+            tf_len = len(section.sections)
             if len(section.sections) != 0 :
             #서브 섹션이 있는 목록을 거르기 위한 len 확인
                 subsection = section.sections
@@ -189,7 +198,7 @@ def main(request):
                     S_pos_list = Text_to_list(sub.text)
                     sub_result = Counting(S_pos_list,search_keyword)
                     sub_list = Keywording(sub_result,number)
-
+                    
                     second_keyword_name.append(sub_list)
                     first_keyword_name.append(sub_key_title)
                     #위치 바꿈
@@ -197,40 +206,26 @@ def main(request):
 
                     summary(sub_list)
 
-
+                    section_list = []
                     for i in S_pos_list :
                         if i[1] == 'NNP' and len(i[0]) > 1:
-                            # print(i[0])
-                            Counting_List.append(i[0])
+                            section_list.append(i[0])
+                    Counting_List.append(section_list)
                     
                     
 
-                    # t = Counter(Counting_List)
-                    # d =  len(Counting_List)
-                    # for i in Counting_List :
-                    #     tf = t[i]/d
-                        # idf = math.log(len(subsection)/sum(second_keyword_name, []).count(i))
-                        # tf_idf = tf*idf
-                        # print(f"{i} : {t[i]},{sum(second_keyword_name, []).count(i)}")
-                        # print(f'{i} tf-idf :  {tf_idf}')
 
+                D = sum(Counting_List, [])
+                for d in Counting_List :
+                    print(Counting_List)
+                    tfidf = {}
+                    for t in d:
+                        print(f'{t} : {tf_idf(t,d,D)}')
+                        if t == search_keyword :
+                            continue
+                        tfidf[t] = tf_idf(t,d,D)
+                    tfidf_list.append(tfidf)
 
-
-
-                    t = sub_result
-                    d = len(sub_list)
-
-                
-                    # for i in sub_list :
-                    #     print(f'{i} : {t[i]} : {sub_result[i]/d}')
-
-                    
-
-
-
-
-                    for i in sub_list : 
-                        print(f"{i} 전체문서 : {sum(second_keyword_name, []).count(i)}")
 
                         
 
@@ -239,13 +234,27 @@ def main(request):
                 # for i in Counting_List :
                 #     print(f"{i} 전체문서 : {sum(second_keyword_name, []).count(i)}")
 
-                    
-
+                
         elif section.title == "역사":
             print("이거는 역사")
 
         else :
             print("패스")
+    count = 0
+    while(count < tf_len) :
+        tfidf_list_sorted = sorted(tfidf_list[count].items(), key = operator.itemgetter(1), reverse=True)
+        count += 1
+        # print(tfidf_list_sorted[:int(number)])
+        sub_temp_list = []
+        for name in tfidf_list_sorted[:int(number)] :
+            print(f"섹션 {count} 번쨰")
+
+            sub_temp_list.append(name[0])
+        sub_final_list.append(sub_temp_list)    
+    
+    # second_keyword_name = sum(sub_final_list, [])
+    second_keyword_name = sub_final_list       
+    print(second_keyword_name)     
             
 ### 서브섹션 존재하는지 체크하고 처리하는 함수 끝
     
