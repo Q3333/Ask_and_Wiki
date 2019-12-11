@@ -9,18 +9,20 @@ from konlpy.tag import Okt
 from konlpy.tag import Komoran
 from collections import Counter
 import simplejson 
-from wordcloud import WordCloud, STOPWORDS 
+from wordcloud import WordCloud, STOPWORDS
+import math
+import operator 
 # 나중에 안쓰면 스탑워드 남기고 워클만삭제
 from .models import Wiki 
 
 wiki=wikipediaapi.Wikipedia('ko')
 #서머리 빼오는 함수에서 속도를 줄이기 위해서 뺌
 
-komoran = Komoran()
-#함수 안에서 계속 생성되는 중복을 방지, 속도 줄이기 위해서 뺌.
-
 DB = Wiki.objects.all()
 #서머리 가져오는게 렉걸려서 DB에 넣어서 확인, DB에 없으면 서머리함수, 있으면 패스
+
+komoran = Komoran()
+#함수 안에서 계속 생성되는 중복을 방지, 속도 줄이기 위해서 뺌.
 
 def Text_to_list(text_a):
     text = text_a
@@ -66,7 +68,6 @@ def Keywording(Counter_a, number):
     return temp_list
 
 def summary(list_a):
-    summary_list = []
     
     for k in list_a :
         check_DB = DB.filter(title=k)
@@ -82,20 +83,16 @@ def summary(list_a):
 
             if a == None and b == None:
                 a = page_py.summary
-                summary_list.append(a[:a.find('\n')])
                 DB_wiki.summary = a[:a.find('\n')]
             else : 
-                summary_list.append("동음 이의어 문서입니다. 해당 키워드를 다시 검색해 주세요.")
                 DB_wiki.summary = "동음 이의어 문서입니다. 해당 키워드를 다시 검색해 주세요."
                 
 
             DB_wiki.save()
 
         else : 
-            print("이건 이미 DB에 있는 값임 ")
-            summary_list.append(check_DB[0].summary)
+            print(f"이건 이미 DB에 있는 값임, 단어 이름 : {k} ")
 
-    return summary_list
 
 def index(request):
     return render(request, 'Ask_Wiki/index.html')
@@ -123,6 +120,10 @@ def result(request):
     }
     return render(request, 'Ask_Wiki/result_page.html',context)
 
+def tf_idf(t,d,D):
+    tf = float(d.count(t)) / sum(d.count(w) for w in set(d))
+    idf = math.log( float(len(D))/ (len([doc for doc in D if t in doc])) )
+    return tf*idf
 
 def main(request):
     search_keyword = None
@@ -167,12 +168,13 @@ def main(request):
     first_keyword_name=[]
     # primary_list_name -> first_keyword_name 로 변경
     Counting_List = []
-    total_summary = []
-    second_summary = []
+    tfidf_list = []
+    sub_final_list = []
 
     for section in page_py.sections :
         print(section.title)
         if section.title.find("생애") != -1:
+            tf_len = len(section.sections)
             if len(section.sections) != 0 :
             #서브 섹션이 있는 목록을 거르기 위한 len 확인
                 subsection = section.sections
@@ -180,50 +182,50 @@ def main(request):
 
                 for sub in subsection :
                     a = sub.text
-                    total_summary.append(a[:a.find('\n')])
-                    #서머리 구하는 함수
+                    sub_key_title = f"{search_keyword}_{sub.title}"
+
+                    check_DB = DB.filter(title=sub)
+                    if len(check_DB) == 0 :
+                        
+                        print(f"서브섹션의 DB 새로 추가, 단어 이름 : {sub_key_title}")
+                        DB_wiki = Wiki()
+                        DB_wiki.title = sub.title
+                        print(sub.title)
+                        DB_wiki.summary = a[:a.find('\n')]
+                        
+                        DB_wiki.save()
 
                     S_pos_list = Text_to_list(sub.text)
                     sub_result = Counting(S_pos_list,search_keyword)
                     sub_list = Keywording(sub_result,number)
-
+                    
                     second_keyword_name.append(sub_list)
-                    first_keyword_name.append(sub.title)
+                    first_keyword_name.append(sub_key_title)
                     #위치 바꿈
 
+
+                    summary(sub_list)
+
+                    section_list = []
                     for i in S_pos_list :
                         if i[1] == 'NNP' and len(i[0]) > 1:
-                            # print(i[0])
-                            Counting_List.append(i[0])
+                            section_list.append(i[0])
+                    Counting_List.append(section_list)
                     
                     
 
-                    # t = Counter(Counting_List)
-                    # d =  len(Counting_List)
-                    # for i in Counting_List :
-                    #     tf = t[i]/d
-                        # idf = math.log(len(subsection)/sum(second_keyword_name, []).count(i))
-                        # tf_idf = tf*idf
-                        # print(f"{i} : {t[i]},{sum(second_keyword_name, []).count(i)}")
-                        # print(f'{i} tf-idf :  {tf_idf}')
 
+                D = sum(Counting_List, [])
+                for d in Counting_List :
+                    print(Counting_List)
+                    tfidf = {}
+                    for t in d:
+                        print(f'{t} : {tf_idf(t,d,D)}')
+                        if t == search_keyword :
+                            continue
+                        tfidf[t] = tf_idf(t,d,D)
+                    tfidf_list.append(tfidf)
 
-
-
-                    t = sub_result
-                    d = len(sub_list)
-
-                
-                    # for i in sub_list :
-                    #     print(f'{i} : {t[i]} : {sub_result[i]/d}')
-
-                    
-
-
-
-
-                    for i in sub_list : 
-                        print(f"{i} 전체문서 : {sum(second_keyword_name, []).count(i)}")
 
                         
 
@@ -232,13 +234,27 @@ def main(request):
                 # for i in Counting_List :
                 #     print(f"{i} 전체문서 : {sum(second_keyword_name, []).count(i)}")
 
-                    
-
+                
         elif section.title == "역사":
             print("이거는 역사")
 
         else :
             print("패스")
+    count = 0
+    while(count < tf_len) :
+        tfidf_list_sorted = sorted(tfidf_list[count].items(), key = operator.itemgetter(1), reverse=True)
+        count += 1
+        # print(tfidf_list_sorted[:int(number)])
+        sub_temp_list = []
+        for name in tfidf_list_sorted[:int(number)] :
+            print(f"섹션 {count} 번쨰")
+
+            sub_temp_list.append(name[0])
+        sub_final_list.append(sub_temp_list)    
+    
+    # second_keyword_name = sum(sub_final_list, [])
+    second_keyword_name = sub_final_list       
+    print(second_keyword_name)     
             
 ### 서브섹션 존재하는지 체크하고 처리하는 함수 끝
     
@@ -258,19 +274,34 @@ def main(request):
     # 전체 카운팅
     pos_list = Text_to_list(page_py.text)
 
+    
+### 키워드의 타이틀, 서머리 DB에 넣는 곳
+
     if request.POST.get('original_keyword') == None :
-        total_result = Counting(pos_list,search_keyword)
+        total_result = Counting(pos_list,search_keyword) 
     else : 
         original_keyword = request.POST.get('original_keyword')
         total_result = Counting(pos_list,original_keyword)
+        page_py = wiki.page(original_keyword)
+
+    keyword = Wiki()
+    keyword.title = page_py.title
+    a = page_py.summary
+    keyword.summary = a[:a.find('\n')]
+
+    keyword.save()
+
+### 키워드 타이틀, 서머리 작업 끝
+
     # 동음 이의어 문서에서 링크 타고 들어왔으면 불용어에 original_keyword를 사용
 
     # 서브섹션 없는 키워드 다루는 부분
-    if len(second_keyword_name) == 0 and len(total_summary) == 0:
+    if len(first_keyword_name) == 0:
         first_keyword_name = Keywording(total_result,number)
-        total_summary = summary(first_keyword_name)
+        summary(first_keyword_name)
 
 
+        # 두번째 서머리 다루는 부분
         for single_keyword in first_keyword_name :
 
             page_py2 = wiki.page(single_keyword)
@@ -282,22 +313,24 @@ def main(request):
             if a == None and b == None:
                 pos_list = Text_to_list(page_py2.text)
                 total_result = Counting(pos_list,single_keyword)
-                # 두번째 서머리 다루는 부분
-                second_keyword_name.append(Keywording(total_result,number))
-                a = Keywording(total_result,number)
-                second_summary.append(summary(a))
+                
+                second_keyword_name= Keywording(total_result,number)
+                summary(second_keyword_name)
+
             else : 
                 second_keyword_name.append(["동음 이의어 문서입니다. 해당 키워드를 메인 화면에서 다시 검색해 주세요."])
+
+    
 
 
 ### 텍스트 전처리, 카운팅 끝
     
-
+    # DB 데이터 업데이트 안되었으면 아래에서 한번 더 선언해줌
     second_keyword_name.reverse()
     context = {
         'DB2' : DB,
-        'second_summary' : second_summary,
-        'total_summary' : total_summary,
+        'second_summary' : "",
+        'total_summary' : "",
         'second_keyword_name' : second_keyword_name,
         'first_keyword_name' : first_keyword_name,
         'title' : page_py.title,
