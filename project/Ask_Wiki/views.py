@@ -11,12 +11,16 @@ from collections import Counter
 import simplejson 
 from wordcloud import WordCloud, STOPWORDS 
 # 나중에 안쓰면 스탑워드 남기고 워클만삭제
+from .models import Wiki 
 
 wiki=wikipediaapi.Wikipedia('ko')
 #서머리 빼오는 함수에서 속도를 줄이기 위해서 뺌
 
 komoran = Komoran()
 #함수 안에서 계속 생성되는 중복을 방지, 속도 줄이기 위해서 뺌.
+
+DB = Wiki.objects.all()
+#서머리 가져오는게 렉걸려서 DB에 넣어서 확인, DB에 없으면 서머리함수, 있으면 패스
 
 def Text_to_list(text_a):
     text = text_a
@@ -47,11 +51,13 @@ def Counting(list_a, search_word):
     # collections.Counter 를 반환함, 리스트를 반환하고 싶으면 return Counting_List
 
 
-def Keywording(Counter_a):
+def Keywording(Counter_a, number):
     #지금은 단순 카운팅, 나중에 tf,idf로 적용
+    
+    number = int(number)
     temp_list = []
 
-    list_4 = Counter_a.most_common(4)
+    list_4 = Counter_a.most_common(number)
     # 4 빼놓으셨길래 다시 채움
 
     for a in list_4:
@@ -63,17 +69,31 @@ def summary(list_a):
     summary_list = []
     
     for k in list_a :
-        page_py = wiki.page(k)
-        categories = page_py.categories
-        a = categories.get('분류:동음이의어 문서')
-        b = categories.get('분류:동명이인 문서')
+        check_DB = DB.filter(title=k)
+        if len(check_DB) == 0 :
+            print(f"DB 새로 추가, 단어 이름 : {k}")
+            page_py = wiki.page(k)
+            categories = page_py.categories
+            a = categories.get('분류:동음이의어 문서')
+            b = categories.get('분류:동명이인 문서')
 
-        if a == None and b == None:
-            a = page_py.summary
-            summary_list.append(a[:a.find('\n')])
+            DB_wiki = Wiki()
+            DB_wiki.title = page_py.title
+
+            if a == None and b == None:
+                a = page_py.summary
+                summary_list.append(a[:a.find('\n')])
+                DB_wiki.summary = a[:a.find('\n')]
+            else : 
+                summary_list.append("동음 이의어 문서입니다. 해당 키워드를 다시 검색해 주세요.")
+                DB_wiki.summary = "동음 이의어 문서입니다. 해당 키워드를 다시 검색해 주세요."
+                
+
+            DB_wiki.save()
+
         else : 
-            summary_list.append("동음 이의어 문서입니다. 해당 키워드를 다시 검색해 주세요.")
-            # print(page_py.links.keys())
+            print("이건 이미 DB에 있는 값임 ")
+            summary_list.append(check_DB[0].summary)
 
     return summary_list
 
@@ -106,9 +126,13 @@ def result(request):
 
 def main(request):
     search_keyword = None
+    
     if request.method == "POST":
         search_keyword = request.POST.get('search_keyword')
-        # print(request.POST.get('num')) 가지갯수 num으로 꺼내 쓰면 됩니다
+        number = request.POST.get('num')
+        # number는 가지 개수, 초기 화면에선 4개로 고정
+        if number == None :
+            number = str(4)
 
     if search_keyword == None or search_keyword == "" :
         return render(request, 'Ask_Wiki/error_page.html')
@@ -161,7 +185,7 @@ def main(request):
 
                     S_pos_list = Text_to_list(sub.text)
                     sub_result = Counting(S_pos_list,search_keyword)
-                    sub_list = Keywording(sub_result)
+                    sub_list = Keywording(sub_result,number)
 
                     second_keyword_name.append(sub_list)
                     first_keyword_name.append(sub.title)
@@ -243,12 +267,11 @@ def main(request):
 
     # 서브섹션 없는 키워드 다루는 부분
     if len(second_keyword_name) == 0 and len(total_summary) == 0:
-        first_keyword_name = Keywording(total_result)
+        first_keyword_name = Keywording(total_result,number)
         total_summary = summary(first_keyword_name)
-        # print(total_summary)
+
 
         for single_keyword in first_keyword_name :
-            print(single_keyword)
 
             page_py2 = wiki.page(single_keyword)
 
@@ -259,10 +282,10 @@ def main(request):
             if a == None and b == None:
                 pos_list = Text_to_list(page_py2.text)
                 total_result = Counting(pos_list,single_keyword)
-                second_keyword_name.append(Keywording(total_result))
-                # 서머리 다루는건 속도때문에 안하거나 나중에...(12/10일 작업)
-                # a = Keywording(total_result)
-                # second_summary.append(summary(a))
+                # 두번째 서머리 다루는 부분
+                second_keyword_name.append(Keywording(total_result,number))
+                a = Keywording(total_result,number)
+                second_summary.append(summary(a))
             else : 
                 second_keyword_name.append(["동음 이의어 문서입니다. 해당 키워드를 메인 화면에서 다시 검색해 주세요."])
 
@@ -272,6 +295,7 @@ def main(request):
 
     second_keyword_name.reverse()
     context = {
+        'DB2' : DB,
         'second_summary' : second_summary,
         'total_summary' : total_summary,
         'second_keyword_name' : second_keyword_name,
