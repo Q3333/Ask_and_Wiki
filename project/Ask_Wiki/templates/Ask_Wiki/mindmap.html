@@ -101,8 +101,18 @@
 
 
 
+<div id="hidden-summary" >
+  
+  {% for a in DB2 %}
+    {% if a.title == "초콜릿" %}
+      {{a.summary}}
+    {% endif %}
+  {% endfor %}
+  
+  
+</div>
 
-<div id="hidden-summary" style="display: none;">{% for c in total_summary %}{{c}}/{% endfor %}</div>
+<!-- <div id="hidden-summary" style="display: none;">{@% for c in total_summary %}{@{c}}/{@% endfor %}</div> -->
 
 <div id="total-keyword" style="display: none;">{% for d in first_keyword_name %}{{d}}/{% endfor %}</div>
 
