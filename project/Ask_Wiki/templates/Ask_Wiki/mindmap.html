@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+  <link rel="stylesheet" href="{% static 'Ask_Wiki/css/mindmap.css' %}"/>   
+{% endblock %}
+
+{% block title %}
+검색 결과입니다.
+{% endblock%}
+
+{% block content %}
+<!-- 
+  <ul>
+    <li><a href="http://jeffbarcay.com/">{{title}}</a>
+      <ul>
+        <li><a href="#" target="_blank" data-content="chest-pain" style="background:green !important;">원소</a></li>
+        <li><a href="#" target="_blank" data-content="head-pain" color="blue">동탁</a></li>
+        <li><a href="#" target="_blank" class="icon facebook">유비</a></li>
+        <li><a href="#">조비</a>
+        <ul>
+          <li><a href="#" target="_blank" class="icon twitter" title="9">ACS</a></li> 
+          <li><a href="#" target="_blank" class="closebtn" title="13">STEMI</a></li> 
+            <ul>
+              <li><a href="#" title="A">Treatment</a></li> 
+              <li><a href="#" title="C">Protocol</a></li> 
+            </ul>            
+        </ul>
+        </li>
+      </ul>
+    </li>
+  </ul> 
+-->
+
+  <ul>
+    <li><a href="http://jeffbarcay.com/">{{title}}</a>
+      <ul>
+        {% for a in first_keyword_name %}        
+          <li><a href="#" >{{a}}</a>
+              <ul>
+                {% for b in second_keyword_name.pop %}            
+                    <li><a href="#" >{{b}}</a></li>                
+                {% endfor %}
+              </ul>
+          </li>
+        {% endfor %}
+      </ul>
+    </li>
+  </ul>
+
+  <div id="pop">
+    <div id="pop-title" style="height:24px;">
+      <!-- 동적으로 title 할당 -->
+    </div>
+
+    <div id="pop-text" style="overflow:auto; height:448px">
+      <!-- 동적으로 text 할당 -->
+    </div>
+
+    <div>
+      <div id="close" style="width:100px; margin:auto; bottom:0px; height:24px">close</div>
+    </div>
+</div>
+
+<!-- <div class="mindmap-form-div" style="position:fixed; bottom:40px;">        
+  <form class="mindmap-form-inline" action="{% url 'Ask:main' %}"  method="POST">
+      {% csrf_token %}
+    <div style="width: 100%;">
+      <div class="form-group-text mx-sm-3 mb-2">
+          <input type="text" class="mindmap-form-control" id="text1" name="search_keyword" placeholder="검색어를 입력하세요.">
+      </div>
+
+      <div class="form-group-num row">
+          <input class="form-control" type="number" value="4" id="num" min="1" max="10" step="1">
+      </div>
+
+      <div>
+        <button type="submit"  class="mindmap-btn btn-primary mb-2" id="mindmap-search-btn">G O</button>
+      </div>
+    </div>
+  </form>        
+</div>  -->
+<div class="mindmap-form-div">        
+  <form class="mindmap-form-inline" action="{% url 'Ask:main' %}"  method="POST">
+      {% csrf_token %}
+    <div style="width: 100%;">
+      <div class="form-group-text mx-sm-3 mb-2">
+          <input type="text" class="mindmap-form-control" id="text1" name="search_keyword" placeholder="검색어를 입력하세요.">
+      </div>
+
+      <div class="form-group-num row">
+          <input class="input-num" type="number" value="4" name="num" min="1" max="10" step="1">
+      </div>
+
+      <div class="form-group-btn">
+        <button type="submit"  class="mindmap-btn btn-primary mb-2" id="mindmap-search-btn">G O</button>
+      </div>
+    </div>
+  </form>        
+</div> 
+
+
+
+<div id="hidden-summary" >
+  
+  {% for a in DB2 %}
+    {% if a.title == "초콜릿" %}
+      {{a.summary}}
+    {% endif %}
+  {% endfor %}
+  
+  
+</div>
+
+<!-- <div id="hidden-summary" style="display: none;">{@% for c in total_summary %}{@{c}}/{@% endfor %}</div> -->
+
+<div id="total-keyword" style="display: none;">{% for d in first_keyword_name %}{{d}}/{% endfor %}</div>
+
+<div id="total-summary" style="display: none;">
+  {{ total_summary}}
+</div>
+
+{% endblock %}
+
+{% block bodyscript %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script src="https://jeffbarclay.com/mindmap/raphael-min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js"></script>
+  <script src="{% static 'Ask_Wiki/js/mindmap.js' %}" type="text/javascript"></script>
+{% endblock %}
