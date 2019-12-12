@@ -71,11 +71,13 @@ def summary(list_a):
         final_temp_list = []
         DB = Wiki.objects.all()
         check_DB = DB.filter(title=k)
+        check_DB2 = []
+        
         if len(check_DB) == 0 :
             print(f"DB 새로 추가, 단어 이름 : {k}")
             page_py = wiki.page(k)
             categories = page_py.categories
-            a = categories.get('분류:동음이의어 문서')
+            c = categories.get('분류:동음이의어 문서')
             b = categories.get('분류:동명이인 문서')
 
             DB_wiki = Wiki()
@@ -83,15 +85,19 @@ def summary(list_a):
 
             final_temp_list.append(page_py.title)
 
-            if a == None and b == None:
+            if c == None and b == None:
                 a = page_py.summary
+                check_DB2 = DB.filter(summary=a[:a.find('\n')])
                 DB_wiki.summary = a[:a.find('\n')]
                 final_temp_list.append(a[:a.find('\n')])
+
             else : 
                 DB_wiki.summary = "동음 이의어 문서입니다. 해당 키워드를 다시 검색해 주세요."
                 final_temp_list.append("동음 이의어 문서입니다. 해당 키워드를 다시 검색해 주세요.")
-
-            DB_wiki.save()
+            
+            if len(check_DB2) == 0 :
+                DB_wiki.save()
+            
 
             final_list.append(final_temp_list)
 
@@ -100,7 +106,6 @@ def summary(list_a):
             final_temp_list.append(check_DB[0].title)
             final_temp_list.append(check_DB[0].summary)
             final_list.append(final_temp_list)
-
 
 def index(request):
     return render(request, 'Ask_Wiki/index.html')
