@@ -184,27 +184,24 @@ def main(request):
                     a = sub.text
                     sub_key_title = f"{search_keyword}_{sub.title}"
 
-                    check_DB = DB.filter(title=sub)
+                    check_DB = DB.filter(title=sub_key_title)
                     if len(check_DB) == 0 :
                         
                         print(f"서브섹션의 DB 새로 추가, 단어 이름 : {sub_key_title}")
                         DB_wiki = Wiki()
-                        DB_wiki.title = sub.title
-                        print(sub.title)
+                        DB_wiki.title = sub_key_title
                         DB_wiki.summary = a[:a.find('\n')]
                         
                         DB_wiki.save()
 
                     S_pos_list = Text_to_list(sub.text)
-                    sub_result = Counting(S_pos_list,search_keyword)
-                    sub_list = Keywording(sub_result,number)
+
                     
-                    second_keyword_name.append(sub_list)
                     first_keyword_name.append(sub_key_title)
                     #위치 바꿈
 
 
-                    summary(sub_list)
+                    
 
                     section_list = []
                     for i in S_pos_list :
@@ -237,10 +234,10 @@ def main(request):
                         sub_temp_list.append(name[0])
                     sub_final_list.append(sub_temp_list)    
     
-    # second_keyword_name = sum(sub_final_list, [])
-                second_keyword_name = sub_final_list       
-                print(second_keyword_name)     
-
+                # second_keyword_name = sub_final_list  
+                second_keyword_name = sum(sub_final_list, [])       
+                summary(second_keyword_name) 
+          
 
                         
 
@@ -315,14 +312,14 @@ def main(request):
                 pos_list = Text_to_list(page_py2.text)
                 total_result = Counting(pos_list,single_keyword)
                 
-                second_keyword_name= Keywording(total_result,number)
-                summary(second_keyword_name)
+                second_keyword_list= Keywording(total_result,number)
+                summary(second_keyword_list)
+                second_keyword_name.append(second_keyword_list)
 
             else : 
-                second_keyword_name.append(["동음 이의어 문서입니다. 해당 키워드를 메인 화면에서 다시 검색해 주세요."])
+                print("동음 이의어 문서입니다.")
 
-    
-
+        second_keyword_name = sum(second_keyword_name, []) 
 
 ### 텍스트 전처리, 카운팅 끝
     
