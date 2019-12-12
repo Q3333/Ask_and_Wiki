@@ -62,10 +62,10 @@ def Keywording(Counter_a, number):
     return temp_list
 
 def summary(list_a):
-    
+    DB = Wiki.objects.all()
+
     for k in list_a :
         final_temp_list = []
-        DB = Wiki.objects.all()
         check_DB = DB.filter(title=k)
         check_DB2 = []
         
@@ -105,7 +105,6 @@ def summary(list_a):
 
 def index(request):
     return render(request, 'Ask_Wiki/index.html')
-
 
 
 def result(request):
