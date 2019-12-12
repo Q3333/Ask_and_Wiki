@@ -1,14 +1,14 @@
-
+project/123.txt
 # Created by https://www.gitignore.io/api/python,django
 # Edit at https://www.gitignore.io/?templates=python,django
 
 ### Django ###
 *.log
 *.pot
-*.pyc
+project/*.pyc
 __pycache__/
 local_settings.py
-db.sqlite3
+project/db.sqlite3
 db.sqlite3-journal
 media
 
