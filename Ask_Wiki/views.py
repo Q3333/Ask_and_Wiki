@@ -74,7 +74,8 @@ def summary(list_a):
         check_DB2 = []
         
         if len(check_DB) == 0 :
-            print(f"DB 새로 추가, 단어 이름 : {k}")
+            print("DB 새로 추가, 단어 이름 : ")
+            print(k)
             page_py = wiki.page(k)
             categories = page_py.categories
             c = categories.get('분류:동음이의어 문서')
@@ -102,7 +103,8 @@ def summary(list_a):
             final_list.append(final_temp_list)
 
         else : 
-            print(f"이건 이미 DB에 있는 값임, 단어 이름 : {k} ")
+            print("이건 이미 DB에 있는 값임, 단어 이름 :  ")
+            print(k)
             final_temp_list.append(check_DB[0].title)
             final_temp_list.append(check_DB[0].summary)
             final_list.append(final_temp_list)
@@ -196,7 +198,7 @@ def main(request):
 
                 for sub in subsection :
                     a = sub.text
-                    sub_key_title = f"{search_keyword}_{sub.title}"
+                    sub_key_title = search_keyword + "_" + sub.title
 
                     final_temp2_list = []
                     check_DB = DB.filter(title=sub_key_title)
