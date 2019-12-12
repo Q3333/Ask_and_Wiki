@@ -2,10 +2,6 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 import wikipediaapi
 import konlpy
-import nltk
-from konlpy.tag import Hannanum
-from konlpy.tag import Kkma
-from konlpy.tag import Okt
 from konlpy.tag import Komoran
 from collections import Counter
 import simplejson 
@@ -75,7 +71,6 @@ def summary(list_a):
         
         if len(check_DB) == 0 :
             print("DB 새로 추가, 단어 이름 : ")
-            print(k)
             page_py = wiki.page(k)
             categories = page_py.categories
             c = categories.get('분류:동음이의어 문서')
@@ -104,7 +99,6 @@ def summary(list_a):
 
         else : 
             print("이건 이미 DB에 있는 값임, 단어 이름 :  ")
-            print(k)
             final_temp_list.append(check_DB[0].title)
             final_temp_list.append(check_DB[0].summary)
             final_list.append(final_temp_list)
@@ -112,18 +106,6 @@ def summary(list_a):
 def index(request):
     return render(request, 'Ask_Wiki/index.html')
 
-
-def ajax(request):
-    # request.POST.get('json형식 안의 내용') from html
-    from_html_text = request.POST.get('text')
-    print(from_html_text)
-
-    context = {
-        'text_return': 'aaaaa',
-        'text_return2': '서버에서 보낸data',
-    }
-    
-    return HttpResponse(simplejson.dumps(context), 'Ask_Wiki/index.html')
 
 
 def result(request):
@@ -238,10 +220,8 @@ def main(request):
 
                 D = sum(Counting_List, [])
                 for d in Counting_List :
-                    print(Counting_List)
                     tfidf = {}
                     for t in d:
-                        # print(f'{t} : {tf_idf(t,d,D)}')
                         if t == search_keyword :
                             continue
                         tfidf[t] = tf_idf(t,d,D)
