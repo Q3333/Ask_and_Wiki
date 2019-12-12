@@ -18,12 +18,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
-
+from decouple import config
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '98n!+154*+(zr4d7_c$i_g&og$2zt@5=_yp66l1e@7k8=!4_(c'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -123,3 +123,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'config', 'static'),
 ]
+
+  # 최하단에 추가
+
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())
