@@ -225,6 +225,21 @@ def main(request):
                             continue
                         tfidf[t] = tf_idf(t,d,D)
                     tfidf_list.append(tfidf)
+                count = 0
+                while(count < tf_len) :
+                    tfidf_list_sorted = sorted(tfidf_list[count].items(), key = operator.itemgetter(1), reverse=True)
+                    count += 1
+                    # print(tfidf_list_sorted[:int(number)])
+                    sub_temp_list = []
+                    for name in tfidf_list_sorted[:int(number)] :
+                        print(f"섹션 {count} 번쨰")
+
+                        sub_temp_list.append(name[0])
+                    sub_final_list.append(sub_temp_list)    
+    
+    # second_keyword_name = sum(sub_final_list, [])
+                second_keyword_name = sub_final_list       
+                print(second_keyword_name)     
 
 
                         
@@ -240,21 +255,7 @@ def main(request):
 
         else :
             print("패스")
-    count = 0
-    while(count < tf_len) :
-        tfidf_list_sorted = sorted(tfidf_list[count].items(), key = operator.itemgetter(1), reverse=True)
-        count += 1
-        # print(tfidf_list_sorted[:int(number)])
-        sub_temp_list = []
-        for name in tfidf_list_sorted[:int(number)] :
-            print(f"섹션 {count} 번쨰")
-
-            sub_temp_list.append(name[0])
-        sub_final_list.append(sub_temp_list)    
-    
-    # second_keyword_name = sum(sub_final_list, [])
-    second_keyword_name = sub_final_list       
-    print(second_keyword_name)     
+   
             
 ### 서브섹션 존재하는지 체크하고 처리하는 함수 끝
     
