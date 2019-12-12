@@ -84,33 +84,33 @@
         });
         
         ///////////////////////////////////////////////////////////////////////////
-        this.el.hover(function(){
+        // this.el.hover(function(){
             
-            $('#pop-title').text(this.text);
-            //$('#pop-text').text();// html에서 ? 
+        //     $('#pop-title').text(this.text);
+        //     //$('#pop-text').text();// html에서 ? 
 
-            var summary = $('#hidden-summary').text() //hidden div text
-            var summary_arr = summary.split("/") 
+        //     var summary = $('#hidden-summary').text() //hidden div text
+        //     var summary_arr = summary.split("/") 
             
-            var keyword = $('#total-keyword').text() //hidden div text
-            var keyword_arr = keyword.split("/")
+        //     var keyword = $('#total-keyword').text() //hidden div text
+        //     var keyword_arr = keyword.split("/")
 
-            if(keyword_arr.indexOf(this.text) != -1){
-                $('#pop-text').text(summary_arr[keyword_arr.indexOf(this.text)])
-            }else{
-                $('#pop-text').text('')
-            }
-            if($('#pop-text').text() == ""){
-                $('#pop-text').text('aaaaaaaaaaaaa')
-            }
+        //     if(keyword_arr.indexOf(this.text) != -1){
+        //         $('#pop-text').text(summary_arr[keyword_arr.indexOf(this.text)])
+        //     }else{
+        //         $('#pop-text').text('')
+        //     }
+        //     if($('#pop-text').text() == ""){
+        //         $('#pop-text').text('aaaaaaaaaaaaa')
+        //     }
 
-            $('#pop').show();
+        //     $('#pop').show();
 
-        });
+        // });
 
-        this.el.mouseleave(function(){
-            $('#pop').hide();
-        });
+        // this.el.mouseleave(function(){
+        //     $('#pop').hide();
+        // });
         ///////////////////////////////////////////////////////////////////////////
     };
 
@@ -619,14 +619,60 @@ $(document).ready(function() {
     
     
 /////////////////////////////////////////////////////////////////////////////
-    // $('.node ui-draggable').hover(function(e){
-    //     // $('#pop').show();
-    // })
+$('#pop').hide(); //기본은 감춰져있음
 
+    // var summary = $('#hidden-summary').text() //hidden div text
+    // var summary_arr = summary.split("//");
+    // summary_arr.splice(summary_arr.indexOf(""),1);
+    // console.log(summary_arr.length) //17개
+
+    // var first_keyword = $('#first-keyword').text() //hidden div text
+    // var first_keyword_arr = first_keyword.split("//")
+    // first_keyword_arr.splice(first_keyword_arr.indexOf(""),1); 
+    // // console.log(first_keyword_arr)
+
+    // var second_keyword = $('#second-keyword').text() //hidden div text
+    // var second_keyword_arr = second_keyword.split("//")
+    // second_keyword_arr.splice(second_keyword_arr.indexOf(""),1); 
+    // // console.log(second_keyword_arr)
+
+    // var total_keyword_arr = first_keyword_arr.concat(second_keyword_arr)
+    // console.log(total_keyword_arr.length)
+    // console.log(total_keyword_arr)
+
+    // for(var i = 0; i< total_keyword_arr.length;i++){
+    //     console.log(total_keyword_arr[i] + ' : ' + summary_arr[i] )
+    // }
+
+    var total_keyword = $('#key').text()
+    var total_keyword_arr = total_keyword.split("//");
+    console.log(total_keyword_arr.length)
+
+    var summary = $('#sum').text() //hidden div text
+    var summary_arr = summary.split("//");
+    console.log(summary_arr.length)
+
+$('.node').hover(function(){ //node 위로 마우스
+    $('#pop-title').text(this.text);
+    
+    if(total_keyword_arr.indexOf(this.text) != -1){
+        $('#pop-text').text(summary_arr[total_keyword_arr.indexOf(this.text)])
+    }else{
+        $('#pop-text').text('')
+    }
+    $('#pop').show();
+});
+
+$('.node').mouseleave(function(){ //node에서 마우스 leave
     $('#pop').hide();
-    $('#close').click(function() {
-        $('#pop').hide();
-    });
+});
+
+$('#close').click(function() {
+    $('#pop').hide();
+});
+
+
+
 
 //////////////////////////////////////////////////////////////////////////////////
 

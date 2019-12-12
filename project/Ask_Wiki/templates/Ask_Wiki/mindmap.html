@@ -10,43 +10,35 @@
 {% endblock%}
 
 {% block content %}
-<!-- 
-  <ul>
-    <li><a href="http://jeffbarcay.com/">{{title}}</a>
-      <ul>
-        <li><a href="#" target="_blank" data-content="chest-pain" style="background:green !important;">원소</a></li>
-        <li><a href="#" target="_blank" data-content="head-pain" color="blue">동탁</a></li>
-        <li><a href="#" target="_blank" class="icon facebook">유비</a></li>
-        <li><a href="#">조비</a>
-        <ul>
-          <li><a href="#" target="_blank" class="icon twitter" title="9">ACS</a></li> 
-          <li><a href="#" target="_blank" class="closebtn" title="13">STEMI</a></li> 
-            <ul>
-              <li><a href="#" title="A">Treatment</a></li> 
-              <li><a href="#" title="C">Protocol</a></li> 
-            </ul>            
-        </ul>
-        </li>
-      </ul>
-    </li>
-  </ul> 
--->
 
-  <ul>
-    <li><a href="http://jeffbarcay.com/">{{title}}</a>
-      <ul>
-        {% for a in first_keyword_name %}        
-          <li><a href="#" >{{a}}</a>
-              <ul>
-                {% for b in second_keyword_name.pop %}            
-                    <li><a href="#" >{{b}}</a></li>                
-                {% endfor %}
-              </ul>
-          </li>
-        {% endfor %}
-      </ul>
-    </li>
-  </ul>
+    <ul>
+      <li><a href="http://jeffbarcay.com/">{{title}}</a>
+        <ul>
+          {% for a in DB2 %}
+            {% for b in first_keyword_name %}
+              {% if a.title == b %}
+                {% if a.summary == "동음 이의어 문서입니다. 해당 키워드를 다시 검색해 주세요." %}
+                  <li><a href="#" >{{b}}</a></li>
+                  <ul>            
+                        <li><a href="#" >동음 이의어 문서입니다. 해당 키워드를 다시 검색해 주세요.</a></li>                
+                    </ul>
+                {% else %}
+                  <li><a href="#" >{{b}}</a>
+                    <ul>
+                      {% for c in second_keyword_name.pop %}            
+                          <li><a href="#" >{{c}}</a></li>                
+                      {% endfor %}
+                    </ul>
+                  </li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </li>
+    </ul>
+
+
 
   <div id="pop">
     <div id="pop-title" style="height:24px;">
@@ -62,24 +54,8 @@
     </div>
 </div>
 
-<!-- <div class="mindmap-form-div" style="position:fixed; bottom:40px;">        
-  <form class="mindmap-form-inline" action="{% url 'Ask:main' %}"  method="POST">
-      {% csrf_token %}
-    <div style="width: 100%;">
-      <div class="form-group-text mx-sm-3 mb-2">
-          <input type="text" class="mindmap-form-control" id="text1" name="search_keyword" placeholder="검색어를 입력하세요.">
-      </div>
 
-      <div class="form-group-num row">
-          <input class="form-control" type="number" value="4" id="num" min="1" max="10" step="1">
-      </div>
 
-      <div>
-        <button type="submit"  class="mindmap-btn btn-primary mb-2" id="mindmap-search-btn">G O</button>
-      </div>
-    </div>
-  </form>        
-</div>  -->
 <div class="mindmap-form-div">        
   <form class="mindmap-form-inline" action="{% url 'Ask:main' %}"  method="POST">
       {% csrf_token %}
@@ -100,24 +76,11 @@
 </div> 
 
 
-
-<div id="hidden-summary" >
-  
-  {% for a in DB2 %}
-    {% if a.title == "초콜릿" %}
-      {{a.summary}}
-    {% endif %}
-  {% endfor %}
-  
-  
+<div id= "key" style="display: none;">
+{% for a in second_keyword_name3 %}{{a.0}}//{% endfor %}
 </div>
-
-<!-- <div id="hidden-summary" style="display: none;">{@% for c in total_summary %}{@{c}}/{@% endfor %}</div> -->
-
-<div id="total-keyword" style="display: none;">{% for d in first_keyword_name %}{{d}}/{% endfor %}</div>
-
-<div id="total-summary" style="display: none;">
-  {{ total_summary}}
+<div id= "sum" style="display: none;">
+{% for a in second_keyword_name3 %}{{a.1}}//{% endfor %}
 </div>
 
 {% endblock %}

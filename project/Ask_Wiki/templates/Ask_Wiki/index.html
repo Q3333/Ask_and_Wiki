@@ -24,4 +24,13 @@
             <button type="submit"  class="btn btn-primary mb-2" id="search-btn">G O</button>
         </form>        
     </div> 
+
+<script>
+    var godouble_img = "{% static 'Ask_Wiki/image/godouble.jpg' %}"
+</script>
+{% endblock %}
+
+{% block bodyscript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="{% static 'Ask_Wiki/js/index.js' %}" type="text/javascript"></script>
 {% endblock %}
