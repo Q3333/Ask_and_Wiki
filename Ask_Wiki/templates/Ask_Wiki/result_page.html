@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- <input id="search_input" type="search" />
+<button id="search_button" type="submit">클릭</button> <br>
+서버에서 받을단어:<h1 id="h1-text">??</h1> <br>
+검색한 단어:<h2 id="h2-text">??</h2> -->
+검색한 단어 : {{ text }}
+
+<script>
+    $('#search_button').click(function(){
+        // var text = $('#search_input').val()
+        var text = $('#text1').val() // 사용자가 입력한 검색 keyword
+        $.ajax({ 
+            type: "POST", // 데이터를 전송type post/get
+            url: "{% url 'Ask:ajax' %}", // 통신할 url을 지정
+            data: {'text': text, 'csrfmiddlewaretoken': '{{ csrf_token }}'}, // 서버로 데이터 전송시 옵션
+            dataType: "json", // 서버측에서 전송한 데이터를 어떤 형식의 데이터로서 해석할 것인가를 지정, 없으면 알아서 판단
+      
+            success: function(data){ 
+                //성공시 수행할 코드
+                alert("통신성공");
+                // alert(data);
+                for(var i in data){
+                    console.log(i)
+                    $('#h1-text').html(data[i])
+                }
+                for(var i in data){
+                    console.log(data[i])
+                }
+                $('#h2-text').html(text)
+            },
+            error: function(request, status, error){
+                //통신 실패시 실행할 코드
+                //window.location.replace("/accounts/login/")
+
+            },
+        }); //end ajax
+
+    }) //end clickevent
+    
+</script>
+
+{% endblock %}

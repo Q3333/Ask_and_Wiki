@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}
+제목임
+{% endblock %}
+{% block content %}
+제목 :
+{{ title }} 
+<hr> 
+<br>
+
+전체 내용에서 카운팅한 키워드 : 
+<br>
+{% for tk in total_keyword  %}
+{{ tk }}
+<br>
+{% endfor %}
+
+<hr>
+전체 내용에서 가져온 키워드들의 요약(100자) :
+<br>
+{% for ts in total_summary  %}
+{{ ts }}
+<br>
+{% endfor %}
+<hr>
+
+<hr>
+주요 내용에서 카운팅한 키워드 :
+<br>
+키워드 : 
+{{primary_keyword_name}}
+<hr>
+{{primary_keyword}}
+<hr>
+
+<br>
+
+<hr>
+
+
+
+{% endblock %}

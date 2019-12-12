@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+  <link rel="stylesheet" href="{% static 'Ask_Wiki/css/ask.css' %}"/>  
+{% endblock %}
+
+{% block title %}
+검색어가 없습니다.
+{% endblock%}
+
+{% block content %}
+<div class="error-div">
+  <div class="error-inner-div">        
+    <div class="error-text">
+      <h3><b>에러가 발생했어요..</b></h3><br><br><br>
+      <h5><b>검색어가 올바르게 입력되지 않았거나 아무 것도 입력되지 않았습니다.</b></h5><br><br><br><br>
+      <div  class="error-amumu-text">
+        <h6>나랑 같이 놀래..?</h6>
+      </div>
+    </div>
+    <div class="error-img">
+      <img src="{% static 'Ask_Wiki/image/amumuimg.png' %}" alt="에러" class="errorimg">
+    </div>
+  </div>
+</div>
+{% endblock %}

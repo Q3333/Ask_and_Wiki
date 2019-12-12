@@ -1,0 +1,55 @@
+body {   
+  background-color:rgb(46, 117, 182)
+}
+
+.div-footer{
+  text-align:center;        
+  position: fixed;
+  bottom: 0;
+}
+.div-footer-text{
+  text-align:center;
+  position: fixed;
+  bottom: 0;  
+  width:100%;
+  font-size:0.9em;        
+}
+
+.infototaldiv{
+  display:none;
+  z-index:10;
+  position:fixed;
+  background-color:rgba( 255, 255, 255, 0.01 );		
+  padding-top:100px;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  overflow:auto;		
+}
+.infoinnerpage{
+  position:relative;
+  background-color:white;
+  color:black;
+  margin:auto;    	
+  padding:0;
+  outline:0;
+  width:600px;                
+  border-style:solid;
+  border-color:rgb(46, 117, 182);
+  border-radius:10px;
+}
+#infoneyong {
+  padding: 4px 40px 4px 40px;
+}
+#infoneyong a {
+  text-decoration: none;
+  color: orange;
+}
+#infoneyong span {
+  color: skyblue;
+}
+.infoclosediv {
+  width: 100%;
+  text-align: center;
+}

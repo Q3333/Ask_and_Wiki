@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'Ask_Wiki/css/ask.css' %}"/>   
+{% endblock %}
+
+{% block title %}
+묻고 위키로 가!
+{% endblock%}
+
+{% block content %}
+    <div class="logo-div">
+        <div class="logo-img-div">
+            <img src="{% static 'Ask_Wiki/image/main2.png' %}" alt="묻고위키로가!" class="mainlogo">
+        </div>
+    </div>
+    <div class="form-div">        
+        <form class="form-inline" action="{% url 'Ask:main' %}"  method="POST">
+            {% csrf_token %}
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="text" class="form-control" id="text1" name="search_keyword" placeholder="검색어를 입력하세요.">
+            </div>
+            <button type="submit"  class="btn btn-primary mb-2" id="search-btn">G O</button>
+        </form>        
+    </div> 
+
+<script>
+    var godouble_img = "{% static 'Ask_Wiki/image/main.png' %}"
+</script>
+{% endblock %}
+
+{% block bodyscript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="{% static 'Ask_Wiki/js/index.js' %}" type="text/javascript"></script>
+{% endblock %}

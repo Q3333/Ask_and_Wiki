@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block link %}
+  <link rel="stylesheet" href="{% static 'Ask_Wiki/css/ask.css' %}"/>   
+{% endblock %}
+
+{% block title %}
+동음이의어 결과입니다.
+{% endblock%}
+
+{% block content %}
+  <div class="same-div">
+    <h4><b>{{ search_keyword }}</b> 에는 다음과 같은 뜻이 있습니다.</h4><br>
+    <ul>
+      {% for link in links.keys %}
+        <form action="{% url 'Ask:main' %}"  method="POST">
+        {% csrf_token %}
+          <li>
+            <input type="hidden" value="{{ link }}" name="search_keyword">
+            <input type="hidden" value="{{ search_keyword }}" name="original_keyword">
+              <a href="#" onclick="this.parentNode.parentNode.submit()">{{link}}</a><br>
+          </li>
+        </form>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

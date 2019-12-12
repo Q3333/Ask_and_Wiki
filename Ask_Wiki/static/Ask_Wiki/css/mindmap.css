@@ -1,0 +1,144 @@
+a {
+  text-decoration:none;
+  color:#000;
+}
+svg{
+  z-index:-1;
+}
+/*
+.alert{
+  display:none;
+}
+*/
+body.js-mindmap-active {
+  min-height: 100vh;
+}
+
+.js-mindmap-active a.node {
+  background: #fff ;
+  border: 1px solid #f0f0f0;
+  -webkit-border-radius: 2rem;
+  -moz-border-radius: 2rem;
+  border-radius: 2rem;
+  padding: 2rem;
+}
+.js-mindmap-active a.node.active {
+  font-size:2rem;
+  margin-left: -2rem;
+  margin-top: -2rem;
+}
+.js-mindmap-active a.node.activeparent {
+  padding:5px 10px !important;
+  border-width:5px !important;
+  background:#cccccc;
+}
+/*
+.js-mindmap-active a.node {
+background:red;
+border: 2px solid white;
+-webkit-border-radius: 60px;
+-moz-border-radius: 60px;
+border-radius: 60px;
+width: 120px;
+height: 60px;
+padding: 30px 0px;
+text-align:center;
+}
+.js-mindmap-active a.node.active {
+border-width:5px !important;
+}
+.js-mindmap-active a.node.activeparent {
+border-width:5px !important;
+background:#8B0000;
+}
+*/
+.js-mindmap-active .node.orange {
+  background:#f89a3a; 
+}
+.js-mindmap-active .node.green {
+  background:#92c63d; 
+}
+.js-mindmap-active .node.blue {
+  background:#4688c2; 
+}
+.js-mindmap-active .node.purple {
+  background:#6b5ba6; 
+}
+.js-mindmap-active .node.red {
+  background:#c64d44; 
+}
+/*
+.alert {
+  padding: 20px;
+  background-color: red;
+  color: white;
+}
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.closebtn:hover {
+  color: black;
+}
+*/
+#pop{
+  width:400px; height:70%; background:white; color:black;
+  position:absolute; top:70px; right:1%; text-align:center;
+  border:1px solid rgb(36, 89, 138);
+  border-radius:10px;
+}
+
+
+
+
+.mindmap-form-div{    
+  width: 100%;
+  margin-left: 17%;
+  position:fixed; 
+  bottom:40px;
+}
+.mindmap-form-inline{
+  width:60%;
+}
+.form-group-text{
+  width: 60%;
+  float: left;
+  margin-right: 0px!important;
+}
+.form-group-num{
+  width:10%;
+  float: left;
+  height:60px;
+  margin-left: 5px;
+}
+.form-group-btn{
+  float: left;
+  margin-left: 20px;
+  width:10%;
+}
+.input-num{
+  height:60px;
+  font-size: 1.2em;
+  text-align: center;
+  width: 100%;
+}
+
+#text1{
+  width:100%;
+  height:60px;
+  font-size: 1.2em;
+}
+#mindmap-search-btn{
+  width:100%;
+  height:60px;
+  font-size:1.4rem;
+  color: black;
+  background-color: white;
+  border-color: white;
+}
