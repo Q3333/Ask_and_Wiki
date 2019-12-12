@@ -285,12 +285,16 @@ def main(request):
     
 
     final_temp3_list = []
-    keyword = Wiki()
-    keyword.title = page_py.title
-    a = page_py.summary
-    keyword.summary = a[:a.find('\n')]
 
-    keyword.save()
+    a = page_py.summary
+    
+    check_DB3 = DB.filter(title=page_py.title)
+
+        if len(check_DB3) == 0 :
+            keyword = Wiki()
+            keyword.title = page_py.title
+            keyword.summary = a[:a.find('\n')]
+            keyword.save()
 
     final_temp3_list.append(page_py.title)
     final_temp3_list.append(a[:a.find('\n')])
