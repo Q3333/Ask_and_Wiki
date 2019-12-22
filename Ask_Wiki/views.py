@@ -9,7 +9,8 @@ from wordcloud import STOPWORDS
 import math
 import operator 
 # 나중에 안쓰면 스탑워드 남기고 워클만삭제
-from .models import Wiki 
+from .models import Wiki
+from django.db.models import Q 
 
 wiki=wikipediaapi.Wikipedia('ko')
 #서머리 빼오는 함수에서 속도를 줄이기 위해서 뺌
@@ -335,8 +336,15 @@ def main(request):
 
     # DB 데이터 업데이트 안되었으면 아래에서 한번 더 선언해줌
     second_keyword_name.reverse()
-    second_keyword_name3 = [["aa","11"],["bb","22"]]
-    DB = Wiki.objects.all()
+    
+    s2 = sum(second_keyword_name, [])
+    Q_keyword_name = first_keyword_name + s2
+    q = Q()
+    for i in Q_keyword_name :
+        q.add(Q(title=i),q.OR)
+
+    DB = Wiki.objects.filter(q)
+
 #서머리 가져오는게 렉걸려서 DB에 넣어서 확인, DB에 없으면 서머리함수, 있으면 패스
 
     context = {

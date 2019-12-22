@@ -17,6 +17,6 @@ from django.contrib import admin
 from django.urls import path,include
 
 urlpatterns = [
-    path('Ask_Wiki/', include('Ask_Wiki.urls')),
+    path('', include('Ask_Wiki.urls')),
     path('admin/', admin.site.urls),
 ]
