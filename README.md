@@ -4,6 +4,9 @@
 
 ### https://final-askwiki.herokuapp.com/
 
+#### 2nd
+### https://final-ask-wiki.herokuapp.com/
+
 ## 1. 기술 스택
 
 
