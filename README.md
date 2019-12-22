@@ -1,5 +1,9 @@
 # 묻고 위키로 가
 
+## 0. 배포 URL
+
+배포 URL : https://final-askwiki.herokuapp.com/
+
 ## 1. 기술 스택
 
 
